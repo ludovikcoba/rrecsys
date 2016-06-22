@@ -1,0 +1,50 @@
+
+exportMethods(
+	"rrecsys",
+	"colRatings",
+	"rowRatings",
+	"numRatings",
+	"ncol",
+	"nrow",
+	"[",
+	"coerce",
+	"sparsity",
+	"predict",
+	"show",
+	"evalRec",
+	"evalPred",
+	"getAUC"
+	)
+
+S3method("print", "rrecsys_registry")
+S3method("print", "rrecsys_entries")
+	
+export("rrecsysRegistry",
+		"evalModel",
+		"recommend",
+		"defineData",
+		"setStoppingCriteria",
+		"showStoppingCriteria",
+		"showDeltaError",
+		"nDCG",
+		"rankScore"
+		)
+		
+exportClasses(
+	"SVDclass",
+	"evalModel",
+	"IBclass",
+	"wALSclass",
+	"BPRclass",
+	"PPLclass",
+	"dataSet",
+	"recResultsClass"
+)
+		
+		
+import("methods",
+		"registry")
+		
+importFrom("proxy", "simil")
+importFrom("MASS", "ginv")
+importFrom("stats", "rnorm")
