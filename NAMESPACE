@@ -43,7 +43,8 @@ exportClasses(
 		
 		
 import("methods",
-		"registry")
+		"registry",
+		"knitr")
 		
 importFrom("proxy", "simil")
 importFrom("MASS", "ginv")

@@ -24,7 +24,7 @@ defineData(data, binary = FALSE, minimum = 1, maximum = 5,
     
     \item{halfStar}{object of class \code{"logical"}, if \bold{TRUE} the range of ratings in the dataset contains as well half star values.  Deafault value \code{FALSE}.}
     
-    \item{goodRating}{class \code{"numeric"}, in case \code{binary} is \code{TRUE}, \code{goodRating} defines the threshold value for binarizing the dataset (i.e. any rating value > \code{goodRating} will be transformed to 1 and all other values to 0(corresponding to a not rated item).  Deafault value \code{0.5}.}
+    \item{goodRating}{class \code{"numeric"}, in case \code{binary} is \code{TRUE}, \code{goodRating} defines the threshold value for binarizing the dataset (i.e. any rating value >= \code{goodRating} will be transformed to 1 and all other values to 0(corresponding to a not rated item).  Deafault value \code{0.5}.}
 }
 
 \value{

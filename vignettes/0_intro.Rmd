@@ -1,0 +1,38 @@
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{Introduction and Installing rrecsys}
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## What is rrecsys?
+Provides implementations of several popular recommendation systems. They can process standard recommendation datasets (user/item matrix) as input and generate rating predictions and recommendation lists. The package is intended for rapid prototyping of recommendation algorithms and education purposes. Currently on rrecsys are developed the following non-personalized RS algorithms:
+
+* Global Average
+* Item Average
+* User Average
+* Most popular
+
+Collaborative filtering:
+
+* Item Based K-nearest neighbors
+* Simon Funk's SVD
+* Bayesian Personalized Ranking (BPR)
+* Weighted Alternated Least Squares (wALS)
+
+rrecsys can be used to predict and recommend(top-N list) using any of the above algorithms. Algorithms work on both Likert scale and binary ratings but BPR and wALS are One-Class CF(OCCF) typical algorithms for implicit feedback. The package offers as well an evaluation methodology with the following standard metrics for the specific task:
+
+* prediction: global or user based MAE and RMSE
+* recommendation: precision, recall, F1, NDCG, rank score and all the elements of the confusion matrix.
+
+## Installation & Loading the package
+This section is dedicated to the recommender systems community with no experience in R. The package is available on [CRAN](https://cran.r-project.org/web/packages/rrecsys/index.html) and as well on [GitHub](https://github.com/ludovikcoba). Both versions are downloadable and installable. To install it from CRAN:
+
+```{r, eval=FALSE}
+install.packages("rrecsys")
+```
+Once the package is installed the usual thing to do would be to load the it:
+```{r, eval=FALSE}
+library(rrecsys)
+```
+Usually we try to keep updated both GitHub and CRAN with the same version of the package. The version on GitHub is intended for the developing community and we recommend to use it with RStudio. On another vignette will be given details on how to extend rrecsys.

@@ -1,13 +1,15 @@
 Package: rrecsys
 Type: Package
 Title: Environment for Assessing Recommender Systems
-Version: 0.9.5.2
+Version: 0.9.5.4
 Date: 2016-06-21
 Authors@R: c(person("Ludovik","Çoba", role=c("aut","cre","cph"), email="lcoba@unishk.edu.al"), 
              person("Markus","Zanker", role="ctb",email="Markuz.Zanker@aau.at"))
+URL: https://github.com/ludovikcoba/rrecsys
 Description: Provides implementations of several popular recommendation systems. They can process standard recommendation datasets (user/item matrix) as input and generate rating predictions and recommendation lists.  Standard algorithm implementations included in this package are: Global/Item/User-Average baselines, Item-Based KNN, FunkSVD, BPR and weighted ALS. They can be assessed according to the standard offline evaluation methodology for recommender systems using measures such as MAE, RMSE, Precision, Recall, AUC, NDCG, RankScore and coverage measures. The package is intended for rapid prototyping of recommendation algorithms and education purposes. 
 Imports: methods
-Depends: R (>= 3.1.2), registry, proxy, MASS, stats
+Depends: R (>= 3.1.2), registry, proxy, MASS, stats, knitr
 License: GPL-3
+VignetteBuilder: knitr
 Encoding: UTF-8
 Repository: CRAN
