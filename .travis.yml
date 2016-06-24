@@ -2,14 +2,5 @@ language: r
 sudo: false
 cache: packages
 
-os:
-  - linux
-
-env:
-  global:
-    - CRAN: http://cran.rstudio.com
-
-warnings_are_errors: true
-
 after_success:
   - Rscript -e 'library(covr);codecov()'
