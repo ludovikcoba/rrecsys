@@ -2,13 +2,5 @@ language: r
 sudo: false
 cache: packages
 
-os:
-  - linux
-
-r_github_packages:
-  - ludovikcoba/rrecsys
-
-warnings_are_errors: false
-
 after_success:
   - Rscript -e 'library(covr);codecov()'
