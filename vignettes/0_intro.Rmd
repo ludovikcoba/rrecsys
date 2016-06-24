@@ -1,12 +1,14 @@
+<!--
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Introduction and Installing rrecsys}
+%\VignetteIndexEntry{0. Introduction and Installing rrecsys}
+-->
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## What is rrecsys?
-Provides implementations of several popular recommendation systems. They can process standard recommendation datasets (user/item matrix) as input and generate rating predictions and recommendation lists. The package is intended for rapid prototyping of recommendation algorithms and education purposes. Currently on rrecsys are developed the following non-personalized RS algorithms:
+Recently R has become one of the most important suite for data analysis, visualization and offers a wide set packages. We think that it is possible to take advantage of such a resorce and use it for quick prototyping and to challenge issues like replicability of results in recommender systems (RS). The other only available package in R for RS is [recommenderlab](https://cran.r-project.org/web/packages/recommenderlab/) (maintained by [Michael Hahsler](http://michael.hahsler.net/)) with a nice range of methods. We were inspired by his work but we thought that R was lacking state-of-the-art implementation of popular algorithms. So rrecsys actually extends R suite with non-personalized and collaborative filtering (CF) algorithms. Currently on rrecsys are developed the following non-personalized RS algorithms:
 
 * Global Average
 * Item Average

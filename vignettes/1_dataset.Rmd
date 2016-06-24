@@ -1,5 +1,7 @@
+<!--
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{A data set in rrecsys}
+%\VignetteIndexEntry{1. A data set in rrecsys}
+-->
 
 ```{r global_options, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -7,7 +9,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## The Rating Matrix
 
-First thing first, to use a RS you should start from a data set, more specificly a rating matrix. In this case rrecsys is built to start process any available matrix as long as the user has a clear idea of the composition of the it’s rating matrix. In a rating matrix all 0 or NULL valuaes will be considered as missing values. The users will be on rows and the items will be on columns. 
+First thing first, to use a RS you should start from a data set, more specifically a rating matrix. In this case rrecsys is built to start process any available matrix as long as the user has a clear idea of the composition of its rating matrix. In a rating matrix all 0 or NULL values will be considered as missing values. The users will be on rows and the items will be on columns. 
 Currently rrecsys is equipped with the [MovieLens Latest](http://grouplens.org/datasets/movielens/latest/) dataset. We will use this dataset for demonstration. To load it:
 ```{r, message=FALSE}
 library(rrecsys)
