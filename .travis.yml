@@ -5,8 +5,11 @@ cache: packages
 os:
   - linux
 
-repos:
-  CRAN: https://cloud.r-project.org
+env:
+  global:
+    - CRAN: http://cran.rstudio.com
+
+warnings_are_errors: true
 
 after_success:
   - Rscript -e 'library(covr);codecov()'
