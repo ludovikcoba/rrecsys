@@ -13,3 +13,4 @@ License: GPL-3
 VignetteBuilder: knitr
 Encoding: UTF-8
 Repository: CRAN
+Suggests: covr
