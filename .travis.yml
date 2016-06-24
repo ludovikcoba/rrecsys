@@ -8,7 +8,5 @@ os:
 repos:
   CRAN: https://cloud.r-project.org
 
-warnings_are_errors: false
-
 after_success:
   - Rscript -e 'library(covr);codecov()'
