@@ -2,5 +2,13 @@ language: r
 sudo: false
 cache: packages
 
+os:
+  - linux
+
+r_github_packages:
+  - cran/rrecsys
+
+warnings_are_errors: true
+
 after_success:
-  - Rscript -e 'library(covr);codecov()'
+  - bash <(curl -s https://codecov.io/bash)
