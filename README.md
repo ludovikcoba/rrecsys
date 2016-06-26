@@ -1,7 +1,7 @@
 # rrecsys 
 [![CRAN](http://www.r-pkg.org/badges/version/rrecsys)](https://cran.r-project.org/web/packages/rrecsys/index.html)
 [![CRAN](http://cranlogs.r-pkg.org/badges/rrecsys)](https://cran.r-project.org/web/packages/rrecsys/index.html)
-<!--- [![Appveyor build status](https://ci.appveyor.com/api/projects/status/j0504s5kapv95xe5?svg=true)](https://ci.appveyor.com/project/ludovikcoba/rrecsys) --->
+[![Appveyor build status](https://ci.appveyor.com/api/projects/status/j0504s5kapv95xe5?svg=true)](https://ci.appveyor.com/project/ludovikcoba/rrecsys) 
 [![Travis CI build status](https://travis-ci.org/ludovikcoba/rrecsys.svg?branch=master)](https://travis-ci.org/ludovikcoba/rrecsys)
 
 A package for R that provides implementations of several popular recommendation systems. They can process standard recommendation datasets (user/item matrix) as input and generate rating predictions and recommendation lists.  Standard algorithm implementations included in this package are: Global/Item/User-Average baselines, Item-Based KNN, FunkSVD, BPR and weighted ALS. They can be assessed according to the standard offline evaluation methodology for recommender systems using measures such as MAE, RMSE, Precision, Recall, AUC, NDCG, RankScore and coverage measures. The package is intended for rapid prototyping of recommendation algorithms and education purposes. 
