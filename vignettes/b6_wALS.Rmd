@@ -1,0 +1,41 @@
+<!--
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{7. Weighted Alternated Least Squares}
+-->
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(rrecsys)
+data("mlLatest100k")
+ML <- defineData(mlLatest100k, minimum = .5, maximum = 5, halfStar = TRUE)
+smallML <- ML[rowRatings(ML)>=90, colRatings(ML)>=90]
+setStoppingCriteria(nrLoops = 10)
+```
+
+## Weighted Alternated Least Squares
+
+We compute a low-rank approximation matrix $\hat{R} = (\hat{R}_{ij})_{m \times n} = U \ast V^T$, where _U_ and _V_ are the usual feature matrix cropped to _k_ features. Weighted low-rank aims to determine $\hat{R}$ such that minimizes the Frobenius loss of the following objective function:
+
+$\mathcal{L}(\hat{R}) = \mathcal{L}(U, V) = \sum_{ij} W_{ij} (R_{ij} - U_i \ast V_j^T)^2 + \lambda \ast (\|U_i\|_F^2 + \|V_i\|_F^2)$
+
+The regularization term weighted by $\lambda$ is added to prevent over-fitting. The expression $\|.\|_F$ denotes the Frobenius norm.
+
+The alternated least square algorithms optimization process solves partial derivatives of $\mathcal{L}$ with respect to each entry $U$ and $V$, $\frac{\partial \mathcal{L}(U,V)}{\partial U_i} = 0$ with fixed $V$ and $\frac{\partial \mathcal{L}(U,V)}{\partial V_j} = 0$ with fixed $U$, to compute $U_i$ and $V_i$.  Then $U$ and $V$ are initialized with random Gaussian numbers with mean zero and small standard deviation and are updated until convergence. The matrix $W = (W_{ij})_{m \times n} \in \mathbb{R}_+^{m \times n}$ is a non-negative weight matrix that assigns confidence values to observations (hence the name weighted ALS). Each update loop was highly vectorized for performance issues. Rong et al. propose three weighing schemes for the unknown entries $W_{ij}$.
+
+Scheme name | Weight scheme | Details
+---------------|------------|---------------------------
+Uniform(uni) | $W_{ij} = \delta$ | Missing entries are set to a fixed value $\delta$.
+User-oriented(uo)  | $W_{ij} \propto \sum_j R_{ij}$ | A higher confidence is assumed for users that have a lot of ratings. It assumes that a user that has a lot of ratings knows properly the catalog and have discarded items with a higher probability.
+Item-oriented(io) | $W_{ij} \propto m - \sum_i R_{ij}$  | If an item has less positive examples the missing data for this item is negative with higher possibility.    
+
+
+To train a model using this algorithm:
+```{r}
+wALS <- rrecsys(smallML, "wALS", k = 5, lambda = 0.01, scheme = "uni", delta = 0.04)
+wALS
+```
+_k_ is he number of features, _lambda_ the learning rate and _scheme_ is one of the three proposed schemes (values: "uni", "uo", or "io") and _delta_ is the value used in the uniform scheme. 
+
+The returned object is of type _wALSclass_. 
+
+To get more details about the slots read the reference [manual](https://cran.r-project.org/web/packages/rrecsys/rrecsys.pdf).

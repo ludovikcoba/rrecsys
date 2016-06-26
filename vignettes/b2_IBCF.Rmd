@@ -1,0 +1,28 @@
+<!--
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{4. Item-based k-nearest neighbors}
+-->
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(rrecsys)
+data("mlLatest100k")
+ML <- defineData(mlLatest100k, minimum = .5, maximum = 5, halfStar = TRUE)
+smallML <- ML[rowRatings(ML)>=60, colRatings(ML)>=50]
+```
+
+## Item-based k-nearest neighbors in rrecsys
+
+Given a target user and her positively rated items, the algorithm will identify the k-most similar items for each target _a_ and will rank them according to aggregated similarities with the different targets as described by Sarwar et al. For similarity computation among two co-rated items the "adjusted cosine" is applied. This implementation is based on the implementation in recommenderlab by Michael Hahsler.
+
+To train a model with this algorithm is required to define an additional argument, _neigh_ the neighborhood size.
+```{r}
+ibknn <- rrecsys(smallML, "ibknn", neigh = 20)
+ibknn
+```
+The _neigh_ default value is 10.
+
+The returned object is of type _IBclass_. 
+
+To get more details about the slots read the reference [manual](https://cran.r-project.org/web/packages/rrecsys/rrecsys.pdf).
+

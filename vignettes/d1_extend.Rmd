@@ -1,0 +1,34 @@
+<!--
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{11. Extendind rrecsys}
+-->
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(rrecsys)
+```
+
+## Extendind rrecsys (prototyping)
+
+Download binaries from GitHub and load the _“rrecsys.RProject”_ file in RStudio. Install _devtools_ package in R (install.packages("devtools"))
+Rename _“yourAlgorithm.R”_ file in "rrecsys-mastet\\R\\" folder (if it isn't renamed it won't be build).
+
+Extending rrecsys is a 5 step procedure. On, your renamed, “yourAlgorithm.R”  file:
+
+1.	Edit “yourAlgorithm” function by setting the arguments that the algorithm requires (line 20).
+
+2.	Start writing your algorithm (line 34).
+
+3.	You need to define an class that will be fed to the _predict()_ method, since every algorithm has its specific prediction methodology.
+Define the output class (line 8) by: setting the name of the class, complete the representation by adding any necessary slot names and their classes (you can use the command _class()_ on an object to get the class name). Don’t change the slots _alg_, data and parameters. 
+Once you have setup the class create the new object correspondingly (line 51).
+
+4.	Add the new entry to the registry by completing the field on line 56 to 60.
+
+5.	Complete the prediction algorithm by adding predicted values on _model@data_.
+When you want to try out your implementation use devtools::load_all(".") or on RStudio’s toolbar menu Build>Load All, so that you can start using rrecsy’s methods.
+If you need to use another library that is not on base R, you may use the library("requiredpackage") on your code but it is better if you include properly the used method in the _NAMESPACE_ file.
+
+Tip: Use as much as you can the browser() function to single step through the execution of your function. It will allow you to view the changed objects during the execution.
+
+Afteer step 5 your algorithm may be used with all the other methods available in rrecsys.

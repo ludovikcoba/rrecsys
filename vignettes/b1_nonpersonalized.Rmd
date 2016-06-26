@@ -5,22 +5,29 @@
 
 ```{r global_options, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(rrecsys)
+data("mlLatest100k")
+ML <- defineData(mlLatest100k, minimum = .5, maximum = 5, halfStar = TRUE)
+smallML <- ML[rowRatings(ML)>=60, colRatings(ML)>=50]
 ```
 
 ## Non-personalized RS in rrecsys
 
 The included baseline predictors are the global mean rating (Global Average), item’s mean rating (Item Average), user's mean ratings (User Average) as well as an unpersonalized Most Popular method that determines item popularity based on the total number of (positive) ratings.
+
 Training a model with them:
-```{r, message=FALSE}
-library(rrecsys)
-data("mlLatest100k")
-ML <- defineData(mlLatest100k, minimum = .5, halfStar = TRUE)
+```{r}
 # The maximum value of the dataset might not be required since the default value coincides to the actual maximal value of the dataset.
-globAv <- rrecsys(ML, alg = "globalaverage")
-
+globAv <- rrecsys(smallML, alg = "globalaverage")
+globAv
 # Algorithm names might be matched on the registry partially.
-itemAv <- rrecsys(ML, "itemAver")
-
-userAv <- rrecsys(ML, "useraverage")
+itemAv <- rrecsys(smallML, "itemAver")
+itemAv
+userAv <- rrecsys(smallML, "useraverage")
+userAv
 ```
 Baseline recommenders do not require any argument.
+
+The returned objec are of type _algAverageClass_. 
+
+To get more details about the slots read the reference [manual](https://cran.r-project.org/web/packages/rrecsys/rrecsys.pdf).

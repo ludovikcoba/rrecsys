@@ -2,7 +2,7 @@ Package: rrecsys
 Type: Package
 Title: Environment for Assessing Recommender Systems
 Version: 0.9.5.4
-Date: 2016-06-21
+Date: 2016-06-26
 Authors@R: c(person("Ludovik","Çoba", role=c("aut","cre","cph"), email="lcoba@unishk.edu.al"), 
              person("Markus","Zanker", role="ctb",email="Markuz.Zanker@aau.at"))
 URL: https://github.com/ludovikcoba/rrecsys

@@ -1,0 +1,31 @@
+<!--
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{6. Simon Funk's SVD}
+-->
+
+---
+bibliography: bibliography.bib
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(rrecsys)
+data("mlLatest100k")
+ML <- defineData(mlLatest100k, minimum = .5, maximum = 5, halfStar = TRUE)
+smallML <- ML[rowRatings(ML)>=60, colRatings(ML)>=50]
+```
+
+## Simon Funk's SVD
+
+We implemented the basic but popular SVD algorithm by Simon Funk. The dimensionality of the user-item matrix is reduced to the _k_ strongest signals using the stochastic gradient descent optimization technique. Each feature weight in the $users \times k$ and $k \times items$ matrices are updated until the preset convergence criteria is met. Implementing FunkSVD in R turned out to be quite challenging due to the algorithm's structure with nested loops and R's inability to perform well under this circumstance. Since R supports array programming and performs very well under it, we kept the structure of the algorithm but vectorized as much as possible update loops.
+
+To train a model using this algorithm:
+```{r}
+svd <- rrecsys(smallML, "FunkSVD", k = 10, gamma = .015, lambda = .001)
+svd
+```
+_k_ is he number of features, _gamma_ the regularization term and _lambda_ the learning rate. The above call is configured to the default values.
+
+The returned object is of type _SVDclass_. 
+
+To get more details about the slots read the reference [manual](https://cran.r-project.org/web/packages/rrecsys/rrecsys.pdf).

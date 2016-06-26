@@ -5,6 +5,7 @@
 
 ```{r global_options, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(rrecsys)
 ```
 
 ## Dispatcher
@@ -20,9 +21,6 @@ In the next vignettes will be given more details about the possible alternative 
 
 ## The registry
 The registry is a structure that may be used even autonomously. The main function of registry would be to display available recommender algorithms in rrecsys and theirs default configuration. To call it:
-```{r,message=FALSE}
-library(rrecsys)
-```
 ```{r}
 rrecsysRegistry
 ```

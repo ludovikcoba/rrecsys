@@ -1,0 +1,30 @@
+<!--
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{5. Iterative updates for FunkSVD, BPR & wALS}
+-->
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(rrecsys)
+```
+
+## Iterative updates
+
+Three of the included algorithms in rrecsys (SVD, BPR and wALS) require to iterate a sequence of code until a convergence criterion is met. In analogy to Lenskit, we implemented two loop controllers for iterative updates. The first stops once an iteration count reaches the specified value. The second stops when the error drops under a specified threshold and this condition is met for a pre-defined number of required multiple consecutive iterations.
+
+To display the current setup:
+```{r}
+showStoppingCriteria()
+```
+To configure the updater to a specific number of loops:
+```{r}
+setStoppingCriteria(nrLoops = 10)
+```
+Default value is set to 10.
+The threshold controller configuration:
+```{r}
+setStoppingCriteria(autoConverge = TRUE, deltaErrorThreshold = 1e-5, minNrLoops = 10)
+```
+Default values are given in the above call to the method. 
+
+The method uses the *global environment* and a configuration will be the same for all three algorithms that require this kind of iteration.

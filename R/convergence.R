@@ -74,7 +74,7 @@ isConverged <- function(x, p) {
   error <- sqrt(sum(abs(x - p)^2)/length(x))
   delta_error <- abs(rrecsys.env$last_error - error)
 
-  if(is.infinite(delta_error) || is.nan(delta_error)) stop("Error diverges!!! Fix learning rate or regularization term.")
+  if(is.infinite(delta_error) || is.nan(delta_error)) stop("Error diverges!!! Fix learning rate, regularization term reconfigure convergence check(method setStoppingCriteri()).")
   
     if (rrecsys.env$autoConverge) {
         # error calculated in terms of RMSE

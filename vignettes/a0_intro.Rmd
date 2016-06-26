@@ -33,7 +33,7 @@ This section is dedicated to the recommender systems community with no experienc
 ```{r, eval=FALSE}
 install.packages("rrecsys")
 ```
-Once the package is installed the usual thing to do would be to load the it:
+Once the package is installed the usual thing to do would be to load it in the environment:
 ```{r, eval=FALSE}
 library(rrecsys)
 ```
