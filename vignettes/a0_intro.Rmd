@@ -7,8 +7,10 @@
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## What is rrecsys?
-Recently R has become one of the most important suite for data analysis, visualization and offers a wide set packages. We think that it is possible to take advantage of such a resorce and use it for quick prototyping and to challenge issues like replicability of results in recommender systems (RS). The other only available package in R for RS is [recommenderlab](https://cran.r-project.org/web/packages/recommenderlab/) (maintained by [Michael Hahsler](http://michael.hahsler.net/)) with a nice range of methods. We were inspired by his work but we thought that R was lacking state-of-the-art implementation of popular algorithms. So rrecsys actually extends R suite with non-personalized and collaborative filtering (CF) algorithms. Currently on rrecsys are developed the following non-personalized RS algorithms:
+## rrecsys
+A package for R that provides implementations of several state-of-the-art recommendation systems. 
+
+Currently on rrecsys are developed the following non-personalized recommender systems (RS) algorithms:
 
 * Global Average
 * Item Average
@@ -28,7 +30,7 @@ rrecsys can be used to predict and recommend(top-N list) using any of the above 
 * recommendation: precision, recall, F1, NDCG, rank score and all the elements of the confusion matrix.
 
 ## Installation & Loading the package
-This section is dedicated to the recommender systems community with no experience in R. The package is available on [CRAN](https://cran.r-project.org/web/packages/rrecsys/index.html) and as well on [GitHub](https://github.com/ludovikcoba). Both versions are downloadable and installable. To install it from CRAN:
+This section is dedicated to the recommender systems community with no experience in R. The package is available on CRAN and as well on [GitHub](https://github.com/ludovikcoba). Both versions are downloadable and installable. To install it from CRAN:
 
 ```{r, eval=FALSE}
 install.packages("rrecsys")

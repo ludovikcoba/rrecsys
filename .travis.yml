@@ -11,4 +11,4 @@ r_github_packages:
 warnings_are_errors: true
 
 after_success:
-  - Rscript -e 'library(covr);codecov()'
+  - Rscript -e 'library(covr);codecov(type = "all", combine_types = TRUE)'
