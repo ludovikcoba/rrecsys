@@ -31,7 +31,7 @@ mlL <- defineData(mlLatest100k, minimum = 0.5, halfStar = T)
 
 mlL
 
-binML <- defineData(mlLatest100k, binray = TRUE, goodRating = 0.5)
+binML <- defineData(mlLatest100k, binary = TRUE, goodRating = 0.5)
 ```
 The goodRating attribute defines a threshold for binarizing the dataset.
 The dataset can be explored and manipulated as follows:
