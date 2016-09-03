@@ -3,10 +3,6 @@
 %\VignetteIndexEntry{6. Simon Funk's SVD}
 -->
 
----
-bibliography: bibliography.bib
----
-
 ```{r global_options, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(rrecsys)
