@@ -35,7 +35,7 @@ BPR <- function(data, k = 10, lambda = 0.05, regU = 0.0025, regI = 0.0025, regJ 
     
     while (!isConverged(x, p)) {
         
-        for (s in 1:100 * row_x) {
+        for (s in 1:(100 * row_x)) {
             # extract a random user one random rated item and one random unrated item for that user.
             while (TRUE) {
                 u <- sample(1:row_x, 1)
@@ -52,16 +52,16 @@ BPR <- function(data, k = 10, lambda = 0.05, regU = 0.0025, regI = 0.0025, regJ 
             
             xuij <- xui - xuj
             
-            sigma <- 1/(1 + exp(-xuij))
+            sigma0 <- 1/(1 + exp(xuij))
             
-            loss <- -log(1/(1 + exp(xuij)))
+            loss <- -log(1/(1 + exp(-xuij)))
             
-            U[u, ] <- U[u, ] + lambda * (sigma * (V[i, ] - V[j, ]) - regU * U[u, ])
+            U[u, ] <- U[u, ] + lambda * (sigma0 * (V[i, ] - V[j, ]) - regU * U[u, ])
             
-            V[i, ] <- V[i, ] + lambda * (sigma * U[u, ] - regI * V[i, ])
+            V[i, ] <- V[i, ] + lambda * (sigma0 * U[u, ] - regI * V[i, ])
             
             if (updateJ) {
-                V[j, ] <- V[j, ] + lambda * (sigma * (-U[u, ]) - regJ * V[j, ])
+                V[j, ] <- V[j, ] + lambda * (sigma0 * (-U[u, ]) - regJ * V[j, ])
             }
             
             
