@@ -15,4 +15,3 @@ VignetteBuilder: knitr
 Encoding: UTF-8
 Repository: CRAN
 LinkingTo: Rcpp
-

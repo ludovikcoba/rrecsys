@@ -1,6 +1,6 @@
 <!--
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{10. Evaluation}
+%\VignetteIndexEntry{3.2 Evaluation}
 -->
 
 ```{r global_options, include=FALSE}

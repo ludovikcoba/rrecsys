@@ -1,6 +1,6 @@
 <!--
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{5. Iterative updates for FunkSVD, BPR & wALS}
+%\VignetteIndexEntry{2.3 Iterative updates for FunkSVD, BPR & wALS}
 -->
 
 ```{r global_options, include=FALSE}

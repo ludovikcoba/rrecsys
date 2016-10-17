@@ -1,6 +1,6 @@
 <!--
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{6. Simon Funk's SVD}
+%\VignetteIndexEntry{2.4 Simon Funk's SVD}
 -->
 
 ```{r global_options, include=FALSE}
@@ -8,7 +8,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(rrecsys)
 data("mlLatest100k")
 ML <- defineData(mlLatest100k, minimum = .5, maximum = 5, halfStar = TRUE)
-smallML <- ML[rowRatings(ML)>=60, colRatings(ML)>=50]
+smallML <- ML[rowRatings(ML)>=250, colRatings(ML)>=150]
 ```
 
 ## Simon Funk's SVD

@@ -44,13 +44,16 @@ BPR <- function(data, k = 10, randomInit = FALSE, lambda = 0.05, regU = 0.0025, 
             # extract a random user one random rated item and one random unrated item for that user.
             while (TRUE) {
                 u <- sample(1:row_x, 1)
-                if (length(userIDX[[u]]) == 0) 
+                # in case there is no rating or all the items for the user are rated
+                # FIX ME: we are suposing that rating matrix fed to this method has at least one rated items or one not rated items.
+                if (length(userIDX[[u]]) == 0 | length(userNOIDX[[u]]) == 0) 
                   next
                 i <- userIDX[[u]][sample(1:length(userIDX[[u]]), 1)]
                 j <- userNOIDX[[u]][sample(1:length(userNOIDX[[u]]), 1)]
                 break
             }
             
+          
             # predict xui and xuj
             xui <- sum(U[u, ] * V[i, ])
             xuj <- sum(U[u, ] * V[j, ])
@@ -66,6 +69,7 @@ BPR <- function(data, k = 10, randomInit = FALSE, lambda = 0.05, regU = 0.0025, 
             V[i, ] <- V[i, ] + lambda * (sigma0 * U[u, ] - regI * V[i, ])
             
             if (updateJ) {
+              
                 V[j, ] <- V[j, ] + lambda * (sigma0 * (-U[u, ]) - regJ * V[j, ])
             }
             

@@ -2,3 +2,4 @@
 ^\.Rproj\.user$
 ^R/yourAlgorithm\.R$
 ^.*\.md$
+^.*\.yml

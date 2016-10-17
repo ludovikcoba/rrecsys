@@ -1,6 +1,6 @@
 <!--
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{7. Bayesian Personalized Ranking}
+%\VignetteIndexEntry{2.5 Bayesian Personalized Ranking}
 -->
 
 ```{r global_options, include=FALSE}
@@ -8,8 +8,8 @@ knitr::opts_chunk$set(echo = TRUE)
 library(rrecsys)
 data("mlLatest100k")
 ML <- defineData(mlLatest100k, minimum = .5, maximum = 5, halfStar = TRUE)
-smallML <- ML[rowRatings(ML)>=60, colRatings(ML)>=50]
-setStoppingCriteria(nrLoops = 10)
+smallML <- ML[rowRatings(ML)>=400, colRatings(ML)>=200]
+setStoppingCriteria(nrLoops = 5)
 ```
 
 ## Bayesian Personalized Ranking
@@ -23,10 +23,10 @@ The model uses a pair-wise interpretation of the implicit feedback matrix and tr
 Given $\Theta$ the parameter vector of a model (in rrecsys the model is a factorized matrix) to determine the personalized ranking for any $i \in I$, BPR aims to maximize $p(\Theta | >_u) \propto p(>_u|\Theta) p(\Theta)$ posterior probabilities. Optimization of $\Theta$ is achieved through a criterion called BPR-OPT which is related to the AUC metric and optimizes it implicitly. We optimized the parameter $\Theta$ with gradient descent, by choosing randomly choosing triples $(u,i,j)$ from the training data.
 
 ```{r}
-bpr <- rrecsys(smallML, "BPR", k = 10, regU = .0025, regI = .0025, regJ = 0.0025, updateJ = TRUE)
+bpr <- rrecsys(smallML, "BPR", k = 10, randomInit = FALSE, regU = .0025, regI = .0025, regJ = 0.0025, updateJ = TRUE)
 bpr
 ```
-_k_ is he number of features, _regU_ the regularization term for user, _regI_ the regularization term for positive item, _updateJ_ a Boolean argument to impose if negative terms must be updated and _regJ_ the regularization term for negative items. The above call is configured to the default values.
+_k_ is he number of features, _randomInit_ to randomly initialize to a small value the item and user feature matrix, _regU_ the regularization term for user, _regI_ the regularization term for positive item, _updateJ_ a Boolean argument to impose if negative terms must be updated and _regJ_ the regularization term for negative items. The above call is configured to the default values.
 
 The returned object is of type _BPRclass_. 
 

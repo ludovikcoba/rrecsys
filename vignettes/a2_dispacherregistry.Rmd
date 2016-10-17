@@ -1,6 +1,6 @@
 <!--
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{2. Dispacher and registry}
+%\VignetteIndexEntry{1.2 Dispacher and registry}
 -->
 
 ```{r global_options, include=FALSE}
