@@ -68,40 +68,44 @@ resetrrecsysenv <- function() {
 }
 
 
-isConverged <- function(x, p) {
+isConverged <- function(x, U, V) {
     
   #in terms of RMSE
-  error <- sqrt(sum(abs(x - p)^2)/length(x))
-  delta_error <- abs(rrecsys.env$last_error - error)
-
-  if(is.infinite(delta_error) || is.nan(delta_error)) stop("Error diverges!!! Fix learning rate, regularization term reconfigure convergence check(method setStoppingCriteri()).")
+  
+  #if(is.infinite(delta_error) || is.nan(delta_error)) stop("Error diverges!!! Fix learning rate, regularization term reconfigure convergence check(method setStoppingCriteri()).")
   
     if (rrecsys.env$autoConverge) {
         # error calculated in terms of RMSE
-        
-        rrecsys.env$counter <- rrecsys.env$counter + 1
-        if ((rrecsys.env$counter > rrecsys.env$minNrLoops) & (delta_error < rrecsys.env$deltaErrorThreshold)) {
-            return(TRUE)
-        }
-
-        if (rrecsys.env$showError) 
-            writeLines(sprintf("Iteration: %s. Delta error: %s.", rrecsys.env$counter, delta_error))
-        
-        # supose there are 10 consecutive iteration where the delta error never changes, we consider our iteration converged if (rrecsys.env$counter == 10) areWeDone <-
-        # TRUE
-        
-        rrecsys.env$last_error <- error
+      p <- U %*% t(V) 
+      error <- sqrt(sum(abs(x - p)^2)/length(x))
+      delta_error <- abs(rrecsys.env$last_error - error)  
+      
+      rrecsys.env$counter <- rrecsys.env$counter + 1
+      if ((rrecsys.env$counter > rrecsys.env$minNrLoops) & (delta_error < rrecsys.env$deltaErrorThreshold)) {
+        return(TRUE)
+      }
+      
+      if (rrecsys.env$showError) 
+        writeLines(sprintf("Iteration: %s. Delta error: %s.", rrecsys.env$counter, delta_error))
+      
+      # supose there are 10 consecutive iteration where the delta error never changes, we consider our iteration converged if (rrecsys.env$counter == 10) areWeDone <-
+      # TRUE
+      
+      rrecsys.env$last_error <- error
     } else {
         
         if (rrecsys.env$showError) {
-            
-            rrecsys.env$last_error <- error
-            writeLines(sprintf("Iteration: %s. Delta error: %s.", rrecsys.env$counter, delta_error))
+          p <- U %*% t(V) 
+          error <- sqrt(sum(abs(x - p)^2)/length(x))
+          delta_error <- abs(rrecsys.env$last_error - error)    
+          
+          rrecsys.env$last_error <- error
+          writeLines(sprintf("Iteration: %s. Delta error: %s.", rrecsys.env$counter, delta_error))
         }
         
         
         rrecsys.env$counter <- rrecsys.env$counter + 1
-        if (rrecsys.env$counter == rrecsys.env$nrLoops) 
+        if (rrecsys.env$counter > rrecsys.env$nrLoops) 
             return(TRUE)
         
     }

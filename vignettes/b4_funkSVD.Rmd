@@ -16,7 +16,7 @@ smallML <- ML[rowRatings(ML)>=60, colRatings(ML)>=50]
 We implemented the basic but popular SVD algorithm by Simon Funk. The dimensionality of the user-item matrix is reduced to the _k_ strongest signals using the stochastic gradient descent optimization technique. Each feature weight in the $users \times k$ and $k \times items$ matrices are updated until the preset convergence criteria is met. Implementing FunkSVD in R turned out to be quite challenging due to the algorithm's structure with nested loops and R's inability to perform well under this circumstance. Since R supports array programming and performs very well under it, we kept the structure of the algorithm but vectorized as much as possible update loops.
 
 To train a model using this algorithm:
-```{r}
+```{r, eval=FALSE}
 svd <- rrecsys(smallML, "FunkSVD", k = 10, gamma = .015, lambda = .001)
 svd
 ```

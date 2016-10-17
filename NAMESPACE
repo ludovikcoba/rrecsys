@@ -1,3 +1,5 @@
+useDynLib(rrecsys)
+#exportPattern("^[[:alpha:]]+")
 
 exportMethods(
 	"rrecsys",
@@ -49,3 +51,4 @@ import("methods",
 importFrom("proxy", "simil")
 importFrom("MASS", "ginv")
 importFrom("stats", "rnorm")
+importFrom(Rcpp, evalCpp)

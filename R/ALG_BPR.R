@@ -6,7 +6,7 @@
 
 # Reference: S. Rendle, C. Freudenthaler, Z. Gantner, and L. Schmidt-Thieme. BPR: Bayesian Personalized Ranking from Implicit Feedback.
 
-BPR <- function(data, k = 10, lambda = 0.05, regU = 0.0025, regI = 0.0025, regJ = 0.0025, updateJ = TRUE) {
+BPR <- function(data, k = 10, randomInit = FALSE, lambda = 0.05, regU = 0.0025, regI = 0.0025, regJ = 0.0025, updateJ = TRUE) {
     
     x <- data@data
     
@@ -20,8 +20,13 @@ BPR <- function(data, k = 10, lambda = 0.05, regU = 0.0025, regI = 0.0025, regJ 
         stop("Invalid number of features! \nLess features than the actual number of items or users! Please correct k!")
     
     # initilize the user and item features
-    U <- matrix(0.1, nrow = row_x, ncol = k)
-    V <- matrix(0.1, nrow = col_x, ncol = k)
+    if(randomInit){
+      U <- matrix(rnorm(row_x * row_y, 0, 0.1), nrow = row_x, ncol = k)
+      V <- matrix(rnorm(row_x * row_y, 0, 0.1), nrow = row_x, ncol = k)
+    }else{
+      U <- matrix(0.1, nrow = row_x, ncol = k)
+      V <- matrix(0.1, nrow = col_x, ncol = k)
+    }
     
     #list of indices pointing to ratings on each user 
     userIDX <- lapply(1:row_x, function(i) which(x[i, ] >= data@minimum))
@@ -71,7 +76,7 @@ BPR <- function(data, k = 10, lambda = 0.05, regU = 0.0025, regI = 0.0025, regJ 
         
     }  #convergence
     
-    p_BPR <- list(k = k, lambda = lambda, regU = regU, regI = regI, regJ = regJ, updateJ = updateJ)
+    p_BPR <- list(k = k, randomInit, lambda = lambda, regU = regU, regI = regI, regJ = regJ, updateJ = updateJ)
     
     new("BPRclass", alg = "BPR", data = data, factors = list(U = U, V = V), parameters = p_BPR)
 }

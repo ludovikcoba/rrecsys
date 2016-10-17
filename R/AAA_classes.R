@@ -2,7 +2,7 @@
 setClass("dataSet", representation(data = "matrix", binary = "logical", minimum = "numeric", maximum = "numeric", halfStar = "logical"))
 
 # SVDclass####
-setClass("SVDclass", representation(alg = "character", data = "dataSet", factors = "list", parameters = "list"))
+setClass("SVDclass", representation(alg = "character", data = "dataSet", factors = "list", parameters = "list", baselines = "list"))
 
 # IBclass####
 setClass("IBclass", representation(alg = "character", data = "dataSet", sim = "matrix", sim_index_kNN = "matrix", neigh = "numeric"))

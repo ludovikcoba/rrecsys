@@ -16,7 +16,7 @@ smallML <- ML[rowRatings(ML)>=60, colRatings(ML)>=50]
 The included baseline predictors are the global mean rating (Global Average), item’s mean rating (Item Average), user's mean ratings (User Average) as well as an unpersonalized Most Popular method that determines item popularity based on the total number of (positive) ratings.
 
 Training a model with them:
-```{r}
+```{r, eval=FALSE}
 # The maximum value of the dataset might not be required since the default value coincides to the actual maximal value of the dataset.
 globAv <- rrecsys(smallML, alg = "globalaverage")
 globAv
@@ -30,4 +30,4 @@ Baseline recommenders do not require any argument.
 
 The returned objec are of type _algAverageClass_. 
 
-To get more details about the slots read the reference [manual](https://cran.r-project.org/web/packages/rrecsys/rrecsys.pdf).
+To get more details about the slots read the reference [manual](https://cran.r-project.org/web/packages/rrecsys/rrecsys.pdf). 

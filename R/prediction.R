@@ -5,7 +5,12 @@ setMethod("predict", signature = c(model = "SVDclass"), function(model, Round = 
   item_not_rated <- which(model@data@data == 0)
   
   # generate predictions
-  p <- model@factors$U %*% t(model@factors$V) 
+  p <- model@factors$U %*% t(model@factors$V) #+ model@baselines$globalAv
+
+  #add line and row baseline
+  for(i in 1:nrow(model@data)) p[i, ] <- p[i,] + model@baselines$baseline_users[i]
+  
+  for(j in 1:ncol(model@data)) p[ , j] <- p[, j] + model@baselines$baseline_items[j]
   
   model@data@data[item_not_rated] <- p[item_not_rated]
   
