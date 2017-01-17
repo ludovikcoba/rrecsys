@@ -22,7 +22,7 @@ The model uses a pair-wise interpretation of the implicit feedback matrix and tr
 
 Given $\Theta$ the parameter vector of a model (in rrecsys the model is a factorized matrix) to determine the personalized ranking for any $i \in I$, BPR aims to maximize $p(\Theta | >_u) \propto p(>_u|\Theta) p(\Theta)$ posterior probabilities. Optimization of $\Theta$ is achieved through a criterion called BPR-OPT which is related to the AUC metric and optimizes it implicitly. We optimized the parameter $\Theta$ with gradient descent, by choosing randomly choosing triples $(u,i,j)$ from the training data.
 
-```{r}
+```{r, eval=FALSE}
 bpr <- rrecsys(smallML, "BPR", k = 10, randomInit = FALSE, regU = .0025, regI = .0025, regJ = 0.0025, updateJ = TRUE)
 bpr
 ```

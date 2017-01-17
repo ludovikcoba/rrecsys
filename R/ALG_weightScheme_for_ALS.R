@@ -1,11 +1,11 @@
 # weight function ####
 
-weightScheme <- function(x, scheme, delta) {
+weightScheme <- function(x, scheme, delta, goodRating) {
     
     # uniform
     if (scheme == "uni") {
         W <- matrix(delta, nrow = nrow(x), ncol = ncol(x))
-        W[x == 1] <- 1
+        W[x >= 1] <- 1
         
         return(W)
         
@@ -19,9 +19,8 @@ weightScheme <- function(x, scheme, delta) {
         for (i in 1:nrow(x)) {
             # if (s[i]!=0){
             W[i, ] <- 1/(1 + exp(-s[i]/10)) + delta - 0.5
-            # W[i,] <- delta + .6 * s[i]/row_max_rated
         }
-        W[x == 1] <- 1
+        W[x >= 1] <- 1
         
         return(W)
         
@@ -33,7 +32,7 @@ weightScheme <- function(x, scheme, delta) {
         s <- (nrow(x) - apply(x, 2, sum))
         col_max_rated <- nrow(x)
         for (j in 1:ncol(x)) W[, j] <- delta + 0.6 * s[j]/col_max_rated
-        W[x == 1] <- 1
+        W[x >= 1] <- 1
         
         return(W)
         
@@ -52,6 +51,6 @@ weightScheme <- function(x, scheme, delta) {
     s <- (nrow(x) - apply(x, 2, sum))/nrow(x)
     m <- nrow(x)
     for (j in 1:ncol(x)) W[, j] <- W[, j] + regterm * 0.8 * s[j]
-    W[x == 1] <- 1
+    W[x >= 1] <- 1
     return(W)
 } 

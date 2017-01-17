@@ -54,17 +54,17 @@ setMethod("evalRec", signature = c(model = "evalModel"), function(model, alg = N
             }
           
             #determine results on user. 
-            res_user <- getPrecRecall(model@data@data[m, ], rec[[m]], model@fold_indices_x_user[[i]][[m]], goodRating)
+            res_user <- getPrecRecall(model@data@data[m, ], rec[[m]], model@fold_indices_x_user[[m]][[i]], goodRating)
             
             for(j in 1:length(res_on_fold)) {
               res_on_fold[[j]] <- res_on_fold[[j]] + res_user[[j]]
             }
             
             nDCG[i] <- nDCG[i] + 
-              nDCG(rec[[m]], model@fold_indices_x_user[[i]][[m]])
+              nDCG(rec[[m]], model@fold_indices_x_user[[m]][[i]])
             
             rankscore[i] <- rankscore[i] + 
-              rankScore(rec[[m]], model@fold_indices_x_user[[i]][[m]], alpha)
+              rankScore(rec[[m]], model@fold_indices_x_user[[m]][[i]], alpha)
         }
         
         res_on_fold <- lapply(res_on_fold, function(x) x/nusers)

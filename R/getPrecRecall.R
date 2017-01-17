@@ -3,6 +3,10 @@
 getPrecRecall <- function(data, rec_items, fold_items_x_user, goodRating) {
   res <- list(TP = 0, FP = 0, TN = 0, FN = 0, precision = 0, recall = 0, F1 = 0)
 
+  
+  if (length(fold_items_x_user) == 0)
+    return(list(TP = 0, FP = 0, TN = 0, FN = 0, precision = 1, recall = 1, F1 = 1))
+  
   if (length(rec_items) != 0) {
     # match test set items with recommended items
     match_TS <- which(rec_items %in% fold_items_x_user)

@@ -18,7 +18,7 @@ setMethod("evalPred", signature = c(model = "evalModel"), function(model, alg = 
         ptm <- Sys.time()
         
         copy_data <- model@data
-        copy_data@data[model@fold_indices[[i]]] <- 0
+        copy_data@data[model@fold_indices[[i]]] <- NA
         
         copy_data@data <- matrix(copy_data@data, nusers)
         
@@ -33,8 +33,8 @@ setMethod("evalPred", signature = c(model = "evalModel"), function(model, alg = 
 
         for (n in 1:nrow(model@data)) {
           #error on rating
-          e <- model@data@data[n, model@fold_indices_x_user[[i]][[n]]] -
-               predictions[n, model@fold_indices_x_user[[i]][[n]]]
+          e <- model@data@data[n, model@fold_indices_x_user[[n]][[i]]] -
+               predictions[n, model@fold_indices_x_user[[n]][[i]]]
 
           if(length(e) == 0) next
           

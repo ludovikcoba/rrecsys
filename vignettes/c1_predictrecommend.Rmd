@@ -10,7 +10,7 @@ data("mlLatest100k")
 ML <- defineData(mlLatest100k, minimum = .5, maximum = 5, halfStar = TRUE)
 smallML <- ML[rowRatings(ML)>=200, colRatings(ML)>=100]
 svd <- rrecsys(smallML, "FunkSVD", k = 10, gamma = .015, lambda = .001)
-ibknn <- rrecsys(smallML, "ibknn", neigh = 20)
+ibknn <- rrecsys(smallML, "ibknn", simFunct = 1, neigh = 20)
 ```
 
 ## Predicting & recommending

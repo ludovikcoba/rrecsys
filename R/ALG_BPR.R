@@ -10,8 +10,8 @@ BPR <- function(data, k = 10, randomInit = FALSE, lambda = 0.05, regU = 0.0025, 
     
     x <- data@data
     
-    row_x <- nrow(x)
-    col_x <- ncol(x)
+    row_x <- nrow(data)
+    col_x <- ncol(data)
     
     colnames(x) <- NULL
     rownames(x) <- NULL
@@ -29,10 +29,10 @@ BPR <- function(data, k = 10, randomInit = FALSE, lambda = 0.05, regU = 0.0025, 
     }
     
     #list of indices pointing to ratings on each user 
-    userIDX <- lapply(1:row_x, function(i) which(x[i, ] >= data@minimum))
+    userIDX <- lapply(1:row_x, function(i) which(!is.na(x[i, ])))
     userIDX <- lapply(userIDX, unname)
     #list of indices pointing to unrated items on each user 
-    userNOIDX <- lapply(1:row_x, function(i) which(x[i, ] < data@minimum))
+    userNOIDX <- lapply(1:row_x, function(i) which(is.na(x[i, ])))
     userNOIDX <- lapply(userNOIDX, unname)
     
     p <- U %*% t(V)
@@ -73,7 +73,6 @@ BPR <- function(data, k = 10, randomInit = FALSE, lambda = 0.05, regU = 0.0025, 
                 V[j, ] <- V[j, ] + lambda * (sigma0 * (-U[u, ]) - regJ * V[j, ])
             }
             
-            
         }
         
         p <- U %*% t(V)
@@ -92,3 +91,20 @@ rrecsysRegistry$set_entry(alg = "BPR",
                           description = "Bayesian Personalized Ranking.", 
                           reference = "S. Rendle, C. Freudenthaler, Z. Gantner, and L. Schmidt-Thieme. BPR: Bayesian Personalized Ranking from Implicit Feedback.",
                           parameters = p_BPR) 
+
+
+
+# bpr prrediction####
+setMethod("predict", signature = c(model = "BPRclass"), function(model, Round = FALSE) {
+
+  
+  item_not_rated <- which(is.na(model@data@data))
+  
+  # generate predictions
+  p <- model@factors$U %*% t(model@factors$V)
+  
+  model@data@data[item_not_rated] <- p[item_not_rated]
+  
+  roundData(model@data, Round)
+})
+

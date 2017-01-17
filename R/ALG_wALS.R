@@ -11,6 +11,8 @@ wALS <- function(data, k = 5, lambda = 0.01, scheme = "None!", delta = 0.04) {
     
     x <- data@data
     
+    x[is.na(x)] <- 0 
+    
     colnames(x) <- NULL
     rownames(x) <- NULL
     
@@ -29,7 +31,11 @@ wALS <- function(data, k = 5, lambda = 0.01, scheme = "None!", delta = 0.04) {
     # Initialize empty U
     U <- matrix(0, nrow = nrow(x), ncol = k)
     
+    
+    
     W <- weightScheme(x, scheme, delta)
+    
+
     
     ptm <- Sys.time()
     
@@ -49,8 +55,6 @@ wALS <- function(data, k = 5, lambda = 0.01, scheme = "None!", delta = 0.04) {
         p <- W * (U %*% t(V))
     }
     
-    
-    
     cat("Total execution time:", as.numeric(Sys.time() - ptm, units = "secs"), "seconds. \n")
     
     p_wALS <- list(k = k, lambda = lambda, scheme = scheme)
@@ -64,3 +68,21 @@ rrecsysRegistry$set_entry(alg = "wALS",
                           description = "Weighted Alternating Least Squares.", 
                           reference = "R. Pan, Y. Zhou, B. Cao, N.  Liu, R. Lukose, M. Scholz, and Q. Yang.  One-Class Collaborative Filtering.",
                           parameters = p_wALS) 
+
+
+
+# ALS####
+setMethod("predict", signature = c(model = "wALSclass"), function(model, Round = FALSE) {
+  
+  item_not_rated <- which(is.na(model@data@data))
+  
+  # generate predictions
+  p <- model@factors$U %*% t(model@factors$V)
+  p <- p * model@weightScheme
+  
+  # replacing not rated items
+  model@data@data[item_not_rated] <- p[item_not_rated]
+  
+  roundData(model@data, Round)
+  
+})

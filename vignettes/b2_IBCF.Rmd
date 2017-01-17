@@ -17,7 +17,7 @@ Given a target user and her positively rated items, the algorithm will identify 
 
 To train a model with this algorithm is required to define an additional argument, _neigh_ the neighborhood size.
 ```{r}
-ibknn <- rrecsys(smallML, "ibknn", neigh = 20)
+ibknn <- rrecsys(smallML, "ibknn", simFunct = 1, neigh = 20)
 ibknn
 ```
 The _neigh_ default value is 10.

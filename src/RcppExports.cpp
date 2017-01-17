@@ -28,3 +28,14 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// ItemSimil
+NumericMatrix ItemSimil(NumericMatrix x);
+RcppExport SEXP rrecsys_ItemSimil(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(ItemSimil(x));
+    return rcpp_result_gen;
+END_RCPP
+}

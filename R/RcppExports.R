@@ -5,3 +5,7 @@ FSVDupdater <- function(ratingMat, U, V, gamma, lambda, itemIdx, nrfeat, feat, g
     .Call('rrecsys_FSVDupdater', PACKAGE = 'rrecsys', ratingMat, U, V, gamma, lambda, itemIdx, nrfeat, feat, globalbaseline, baseline_users, baseline_items, minimum, maximum)
 }
 
+ItemSimil <- function(x) {
+    .Call('rrecsys_ItemSimil', PACKAGE = 'rrecsys', x)
+}
+
