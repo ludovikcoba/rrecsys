@@ -28,7 +28,7 @@ An evaluation on a recommendation:
 ```{r, eval=FALSE}
 evalRec(e, "funk", k = 5, lambda = 0.001, goodRating = 3, topN = 3)
 ```
-The _evalPred_ and _evalRec_ arguments correspond to the arguments of the algorithm that we want to evaulate. _evalRec_, obviosly, has the _topN_ argument and two additional arguments. The _goodRating_ that defines a threshold to distinguish between a negative rating and a positive rating. The _alpha_ argument is the ranking half-life for the rank score metric.
+The _evalPred_ and _evalRec_ arguments correspond to the arguments of the algorithm that we want to evaluate. _evalRec_, obviously, has the _topN_ argument and two additional arguments. The _goodRating_ that defines a threshold to distinguish between a negative rating and a positive rating. The _alpha_ argument is the ranking half-life for the rank score metric.
 
 To compute the AUC:
 ```{r, eval=FALSE}

@@ -39,6 +39,7 @@ exportClasses(
 	"wALSclass",
 	"BPRclass",
 	"PPLclass",
+	"slopeOneClass",
 	"dataSet",
 	"recResultsClass"
 )

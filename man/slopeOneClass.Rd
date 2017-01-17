@@ -1,6 +1,7 @@
 \name{slopeOneClass}
 
 \alias{slopeOneClass}
+\alias{slopeOneClass-class}
 \alias{show,slopeOneClass-method}
 \alias{predict,slopeOneClass-method}
 

@@ -26,12 +26,12 @@ A dataset can be as well binarized by:
 binML <- defineData(mlLatest100k, binary = TRUE, goodRating = 3)
 binML
 ```
-In this case all the rating in mlLatest100k with a value larger or equal to _goodRating_ are converted to 1 and the resto to 0. This conversion has no scientific relevance, just used for demonstration purposes on OCCF.
+In this case all the rating in mlLatest100k with a value larger or equal to _goodRating_ are converted to 1 and the rest to NA. This conversion has no scientific relevance, just used for demonstration purposes on OCCF.
 
 The output of _defineData_ is an S4 object (class _dataSet_). This would be the main input to the dispatcher in rrecsys for training a model.
 
 A _dataSet_ object can be explored with the following methods:
-```{r}
+```{r, eval=FALSE}
 # Number of times an item was rated.
 colRatings(ML)
 # Number of times a user has rated.

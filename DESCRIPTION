@@ -2,16 +2,33 @@ Package: rrecsys
 Type: Package
 Title: Environment for Assessing Recommender Systems
 Version: 0.9.6
-Date: 2016-10-17
-Authors@R: c(person("Ludovik","Çoba", role=c("aut","cre","cph"), email="lucoba@unibz.it"), 
+Date: 2017-01-17
+Authors@R: c(person("Ludovik","Coba", role=c("aut","cre","cph"), email="lucoba@unibz.it"), 
              person("Markus","Zanker", role="ctb",email="Markuz.Zanker@unibz.it"))
 URL: https://github.com/ludovikcoba/rrecsys
 BugReports: https://github.com/ludovikcoba/rrecsys/issues
-Description: Provides implementations of several popular recommendation systems. They can process standard recommendation datasets (user/item matrix) as input and generate rating predictions and recommendation lists.  Standard algorithm implementations included in this package are: Global/Item/User-Average baselines, Item-Based KNN, FunkSVD, BPR and weighted ALS. They can be assessed according to the standard offline evaluation methodology for recommender systems using measures such as MAE, RMSE, Precision, Recall, AUC, NDCG, RankScore and coverage measures. The package is intended for rapid prototyping of recommendation algorithms and education purposes. 
-Imports: methods, Rcpp
-Depends: R (>= 3.1.2), registry, proxy, MASS, stats, knitr
+Description: Provides implementations of several popular recommendation
+    systems. They can process standard recommendation datasets (user/item matrix)
+    as input and generate rating predictions and recommendation lists. Standard
+    algorithm implementations included in this package are: Global/Item/User-Average
+    baselines, Item-Based KNN, FunkSVD, BPR and weighted ALS. They can be assessed
+    according to the standard offline evaluation methodology for recommender systems
+    using measures such as MAE, RMSE, Precision, Recall, AUC, NDCG, RankScore
+    and coverage measures. The package is intended for rapid prototyping of
+    recommendation algorithms and education purposes.
+Imports:
+    methods,
+    Rcpp
+Depends:
+    R (>= 3.1.2),
+    registry,
+    proxy,
+    MASS,
+    stats,
+    knitr
 License: GPL-3
 VignetteBuilder: knitr
 Encoding: UTF-8
 Repository: CRAN
 LinkingTo: Rcpp
+RoxygenNote: 5.0.1

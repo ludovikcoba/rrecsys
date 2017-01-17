@@ -28,6 +28,6 @@ userAv
 ```
 Baseline recommenders do not require any argument.
 
-The returned objec are of type _algAverageClass_. 
+The returned object are of type _algAverageClass_. 
 
 To get more details about the slots read the reference [manual](https://cran.r-project.org/web/packages/rrecsys/rrecsys.pdf). 
