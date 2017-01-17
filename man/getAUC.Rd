@@ -25,7 +25,7 @@ getAUC(model, ...)
 }
 }
 
-\value{Returns a data frame with the \code{AUC} for each of the k-folds definded in the evaluation model and the overall average.}
+\value{Returns a data frame with the \code{AUC} for each of the k-folds defined in the evaluation model and the overall average.}
 \references{
 T. Fawcett, \emph{“ROC Graphs: Notes and Practical Considerations for Data Mining Researchers ROC Graphs : Notes and Practical Considerations for Data Mining Researchers,”}, HP Inven., p. 27, 2003.
 }

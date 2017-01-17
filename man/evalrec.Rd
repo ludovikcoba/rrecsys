@@ -34,7 +34,7 @@ evalRec(model, ...)
 }
 }
 
-\value{Returns a data frame with the \code{precision}, \code{recall}, \code{F1}, \code{nDCG}, \code{RankScore}, \code{true positives(TP)}, \code{false positives(FP)}, \code{true negatives(TN)}, \code{false negatives(FN)}  for each of the k-folds definded in the evaluation model and the overall average.}
+\value{Returns a data frame with the \code{precision}, \code{recall}, \code{F1}, \code{nDCG}, \code{RankScore}, \code{true positives(TP)}, \code{false positives(FP)}, \code{true negatives(TN)}, \code{false negatives(FN)}  for each of the k-folds defined in the evaluation model and the overall average.}
 \references{
 F. Ricci, L. Rokach, B. Shapira, and P. B. Kantor, editors. \emph{Recommender Systems Handbook}. Springer, 2011. ISBN 978-0-387-85819-7. URL \url{http://www.springerlink.com/content/978-0-387-85819-7}.
 }

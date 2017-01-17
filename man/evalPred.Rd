@@ -25,7 +25,7 @@ evalPred(model, ...)
 }
 }
 
-\value{Returns a data frame with the \code{RMSE}, \code{MAE}, \code{globalRMSE} and \code{globalMAE} for each of the k-folds definded in the evaluation model and an average over all folds.}
+\value{Returns a data frame with the \code{RMSE}, \code{MAE}, \code{globalRMSE} and \code{globalMAE} for each of the k-folds defined in the evaluation model and an average over all folds.}
 \references{
 F. Ricci, L. Rokach, B. Shapira, and P. B. Kantor, editors. \emph{Recommender Systems Handbook}. Springer, 2011. ISBN 978-0-387-85819-7. URL \url{http://www.springerlink.com/content/978-0-387-85819-7}.
 }

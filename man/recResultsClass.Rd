@@ -13,7 +13,7 @@ Defines a structure for the results of a recommendation algorithm.
 \section{Slots}{
   \describe{
     \item{\code{indices}:}{indices of the recommended items for each user, class \code{"list"}.}
-    \item{\code{recommended}:}{names, if aviable, of the recommended items for each user, class \code{"list"}.}
+    \item{\code{recommended}:}{names, if available, of the recommended items for each user, class \code{"list"}.}
    }
 }
 \section{Methods}{

@@ -14,10 +14,10 @@ Generate predictions on any of the previously trained models.
 }
 \arguments{
   \item{model}{
-A previosly trained model, see \code{\link{rrecsys}}
+A previously trained model, see \code{\link{rrecsys}}
 }
   \item{Round}{
-object of class \code{"logical"}, if \bold{TRUE} all the predictions are rounded to integer values, else values are returned as calculeted.}
+object of class \code{"logical"}, if \bold{TRUE} all the predictions are rounded to integer values, else values are returned as calculated.}
 }
 \value{
 All unrated items are predicted and the entire matrix is returned with the new ratings.

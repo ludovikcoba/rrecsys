@@ -13,7 +13,7 @@ Class that contains the data and a distribution of the uniform distribution of r
     \item{\code{data}:}{the dataset, class \code{"matrix"}.}
     \item{\code{folds}:}{number of k - folds, class \code{"numeric"}.}
     \item{\code{fold_indices}:}{a list with k slots, each slot represents a fold and contains the index of items assigned to that fold, class \code{"list"}.}
-    \item{\code{fold_indices_x_user}:}{a list that specifies specificly for each user the distribution of the items in the folds, class \code{"list"}.}
+    \item{\code{fold_indices_x_user}:}{a list that specifies specifically for each user the distribution of the items in the folds, class \code{"list"}.}
     }
 }
 \section{Methods}{

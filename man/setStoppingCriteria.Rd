@@ -19,10 +19,10 @@ showDeltaError()
 
 \arguments{
   \item{autoConverge}{
-class \code{"logical"}, turns on the autoconvergence algorithm. 
+class \code{"logical"}, turns on the auto-convergence algorithm. 
 }
   \item{deltaErrorThreshold}{
-class \code{"numeric"}, is the threshold for the autoconvergence algorithm.
+class \code{"numeric"}, is the threshold for the auto-convergence algorithm.
 }
   \item{nrLoops}{
 class \code{"numeric"}, number of loops that will be performed in case \code{autoConvergence} is \code{FALSE}
@@ -37,7 +37,7 @@ If \code{autoConvergence = TRUE} tells the package to monitor the difference of 
 \section{Methods}{
   \describe{
   \item{\code{showStoppingCriteria}}{Print on console the current configuration of the convergence algorithm.}
-  \item{\code{showDeltaError}}{Report the delta error on each iteration of the algorithm that requires an autoconvergence algorithm.}
+  \item{\code{showDeltaError}}{Report the delta error on each iteration of the algorithm that requires an auto-convergence algorithm.}
   }
 }
 
