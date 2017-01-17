@@ -9,3 +9,7 @@ ItemSimil <- function(x) {
     .Call('rrecsys_ItemSimil', PACKAGE = 'rrecsys', x)
 }
 
+weightedSlopeOneRM <- function(x) {
+    .Call('rrecsys_weightedSlopeOneRM', PACKAGE = 'rrecsys', x)
+}
+

@@ -1,4 +1,6 @@
-
+setMethod("show", signature(object = "slopeOneClass"), function(object) {
+  cat("The model was trained on the dataset using ", object@alg, "algorithm.")
+})
 
 
 setMethod("show", signature(object = "evalModel"), function(object) {
