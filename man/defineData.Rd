@@ -10,13 +10,13 @@ Defines your dataset, if either it is implicit or explicit.
 }
 \usage{
 defineData(data, binary = FALSE, minimum = 1, maximum = 5, 
-  halfStar = FALSE, goodRating = 0.5)
+  halfStar = FALSE, goodRating)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
     \item{data}{the dataset, class \code{"matrix"}.}
     
-    \item{binary}{class \code{"logical"}, defines if the item dataset consists of binary (i.e. 0/1) or non-binary ratings. Deafault value \code{FALSE}.}
+    \item{binary}{class \code{"logical"}, defines if the item dataset consists of binary (i.e. NA/1) or non-binary ratings. Deafault value \code{FALSE}.}
     
     \item{minimum}{class \code{"numeric"}, defines the minimal value present in the dataset. Deafault value \code{1}.}
     

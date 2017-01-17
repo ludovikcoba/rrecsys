@@ -84,7 +84,7 @@ r <- rrecsys(myratings, alg = "funkSVD", k = 2)
 r1 <- rrecsys(myratings, alg = "funkSVD", k = 3, 
               gamma = 0.01, lambda = 0.002)
               
-r2 <- rrecsys(myratings, alg = "IBKNN", neigh = 5)
+r2 <- rrecsys(myratings, alg = "IBKNN", simFunct = 1, neigh = 5)
 
 rrecsysRegistry$get_entries()
 

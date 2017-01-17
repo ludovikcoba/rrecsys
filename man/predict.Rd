@@ -5,6 +5,7 @@
 \alias{predict,algAverageClass-method}
 \alias{predict,SVDclass-method}
 \alias{predict,wALSclass-method}
+\alias{predict, slopeOneclass}
 \title{
 Generate predictions.
 }

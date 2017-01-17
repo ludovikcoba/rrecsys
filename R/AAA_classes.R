@@ -41,7 +41,7 @@ setClass("PPLclass", representation( alg = "character",
 setClass("algAverageClass", representation( alg = "character", 
                                             data = "dataSet", 
                                             average = "matrix"))
-
+# slopeOneClass ####
 setClass('slopeOneClass', representation( alg = "character", 
                                           data = "dataSet", 
                                           devcard = "list" )) 

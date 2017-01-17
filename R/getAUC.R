@@ -15,7 +15,7 @@ setMethod("getAUC", signature = c(model = "evalModel"), function(model, alg, ...
         ptm <- Sys.time()
         
         copy_data <- model@data
-        copy_data@data[model@fold_indices[[i]]] <- 0
+        copy_data@data[model@fold_indices[[i]]] <- NA
         
         copy_data@data <- matrix(copy_data@data, nrow(model@data))
         
@@ -25,15 +25,19 @@ setMethod("getAUC", signature = c(model = "evalModel"), function(model, alg, ...
         
         auc <- c(auc, 0)
         
-        temp <- apply(model@data@data, 1, function(x) which(x == 0))
+        temp <- apply(model@data@data, 1, function(x) which(is.na(x)))
+        
         for (u in 1:nrow(model@data)) {
+          
+          FIU <- model@fold_indices_x_user[[u]][[i]]
+          
             # if there are no pairs then the default auc is 0.5
-            if ((length(temp[[u]]) == 0) | (length(model@fold_indices_x_user[[i]][[u]]) == 0)) {
+            if ((length(temp[[u]]) == 0) | (length(FIU == 0)) ){
                 auc_on_user <- 0.5
             } else {
                 auc_on_user <- 0
                 # extract and compair all the items in the folds and compare their predicted value with the predicted value of an urated item.
-                for (m in model@fold_indices_x_user[[i]][[u]]) {
+                for (m in FIU) {
                   for (n in temp[[u]]) {
 
                     if (p[u, m] > p[u, n]) {
@@ -41,10 +45,9 @@ setMethod("getAUC", signature = c(model = "evalModel"), function(model, alg, ...
                     }
 
                   }
+                  auc_on_user <- auc_on_user/(length(FIU) * length(temp[[u]]))
                 }
                 # divede by the number of total checked pairs to get the real auc for the user.
-                auc_on_user <- auc_on_user/(length(model@fold_indices_x_user[[i]][[u]]) * length(temp[[u]]))
-
             }
             auc[i] <- auc[i] + auc_on_user
 
