@@ -14,11 +14,7 @@ IB_kNN <- function(data, simFunct, neigh = 2) {
   if (neigh < 1) 
     stop("Invalid value for neigh!!!")
   
-  if(missing(simFunct)) simFunct <- readline(prompt = "Specify the similarity function:\n1: Cosine.\n2: Adjusted Cosine. \n3: Pearson.")
-  
-  while(missing(simFunct)) simFunct <- readline(prompt = "Please make sure you required the right similarity function:")
-  
-  while(!(simFunct %in% c(1:3))) simFunct <-readline(prompt = "Please make sure you required the right similarity function:")
+  if(missing(simFunct)) stop("Specify the simFunct argument. Values: \n1: Cosine similarity.\n2: Adjusted Cosine similarity. \n3: Pearson correlation.")
   
   #ADJUSTED COSINE SIMIL
   if(simFunct == 2){
