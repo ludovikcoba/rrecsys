@@ -17,7 +17,7 @@ NumericMatrix ItemSimil(NumericMatrix x) {
   for (int i = 1; i < numItem; i++){
     
     for (int j = 0; j < i; j++){
-      
+       
       s = 0;
       s_i = 0;
       s_j = 0;
