@@ -3,3 +3,6 @@
 ^R/yourAlgorithm\.R$
 ^.*\.md$
 ^.*\.yml
+^.*\*.o
+^.*\.docx
+^.*\.exe

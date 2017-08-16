@@ -1,4 +1,4 @@
-# global enviroment:
+# enviroment:
 rrecsys.env <- new.env()
 rrecsys.env$nrLoops <- 10
 rrecsys.env$autoConverge <- FALSE

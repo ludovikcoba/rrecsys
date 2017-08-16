@@ -3,34 +3,21 @@
 %\VignetteIndexEntry{3.1 Predicting & recommending}
 -->
 
-```{r global_options, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-library(rrecsys)
-data("mlLatest100k")
-ML <- defineData(mlLatest100k, minimum = .5, maximum = 5, halfStar = TRUE)
-smallML <- ML[rowRatings(ML)>=200, colRatings(ML)>=100]
-svd <- rrecsys(smallML, "FunkSVD", k = 10, gamma = .015, lambda = .001)
-ibknn <- rrecsys(smallML, "ibknn", simFunct = 1, neigh = 20)
-```
-
 ## Predicting & recommending
 
 Once a model has been trained rrecsys may be used to generate either recommendation or predictions. 
 
 The prediction method will generate a new rating matrix with estimations on the missing ratings. Let’s predict using two models trained in the previous vignettes:
-```{r}
+```{r, eval=FALSE}
 pSVD <- predict(svd)
 pIB <- predict(ibknn)
-# Lets compare predicted results for user 1, 4 and 7 on two movies:
-pSVD[c(1,4,6), c("Jumanji (1995)", "GoldenEye (1995)")]
-pIB[c(1,4,6), c("Jumanji (1995)", "GoldenEye (1995)")]
 ```
 The _predict_ method has a second argument, _Round_ that rounds predicted values to the scale and binds them to the domain of the data set.
 
 The _recommend_ method generates a top-N list for each user:
-```{r}
-rSVD <- recommend(svd, topN = 3)
-rIB <- recommend(ibknn, topN = 3)
+```{r, eval=FALSE}
+rSVD <- recommendHPR(svd, topN = 3)
+rIB <- recommendHPR(ibknn, topN = 3)
 # Let’s compare results on user 3:
 rSVD[4]
 rIB[4]

@@ -6,6 +6,8 @@ exportMethods(
 	"colRatings",
 	"rowRatings",
 	"numRatings",
+	"rowAverages",
+	"colAverages",
 	"ncol",
 	"nrow",
 	"[",
@@ -15,42 +17,51 @@ exportMethods(
 	"show",
 	"evalRec",
 	"evalPred",
-	"getAUC"
+	"getAUC",
+	"summary",
+	"results",
+	"evalModel"
 	)
 
 S3method("print", "rrecsys_registry")
 S3method("print", "rrecsys_entries")
 	
 export("rrecsysRegistry",
-		"evalModel",
-		"recommend",
 		"defineData",
 		"setStoppingCriteria",
 		"showStoppingCriteria",
 		"showDeltaError",
-		"nDCG",
-		"rankScore"
+		"rankScore",
+		"histogram",
+		"evalChart",
+	  "dataChart",
+	  "recommendHPR",
+	  "recommendMF"
 		)
 		
 exportClasses(
 	"SVDclass",
 	"evalModel",
 	"IBclass",
+	"UBclass",
 	"wALSclass",
 	"BPRclass",
 	"PPLclass",
-	"slopeOneClass",
+	"_ds",
 	"dataSet",
-	"recResultsClass"
+	"sparseDataSet",
+	"evalRecResults"
 )
 		
+
 		
 import("methods",
 		"registry",
-		"knitr")
+		"knitr",
+		"ggplot2")
 		
-importFrom("proxy", "simil")
 importFrom("MASS", "ginv")
 importFrom("stats", "rnorm")
 importFrom("Rcpp", "evalCpp")
 importFrom("stats", "var")
+importFrom("stats", "quantile")

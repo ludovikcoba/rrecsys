@@ -6,12 +6,19 @@
 
 # Reference: S. Rendle, C. Freudenthaler, Z. Gantner, and L. Schmidt-Thieme. BPR: Bayesian Personalized Ranking from Implicit Feedback.
 
-BPR <- function(data, k = 10, randomInit = FALSE, lambda = 0.05, regU = 0.0025, regI = 0.0025, regJ = 0.0025, updateJ = TRUE) {
+BPR <- function(data, 
+                k = 10, 
+                randomInit = FALSE, 
+                lambda = 0.05, 
+                regU = 0.0025, 
+                regI = 0.0025, 
+                regJ = 0.0025, 
+                updateJ = TRUE) {
     
     x <- data@data
     
-    row_x <- nrow(data)
-    col_x <- ncol(data)
+    row_x <- nrow(x)
+    col_x <- ncol(x)
     
     colnames(x) <- NULL
     rownames(x) <- NULL
@@ -29,10 +36,10 @@ BPR <- function(data, k = 10, randomInit = FALSE, lambda = 0.05, regU = 0.0025, 
     }
     
     #list of indices pointing to ratings on each user 
-    userIDX <- lapply(1:row_x, function(i) which(!is.na(x[i, ])))
+    userIDX <- lapply(1:row_x, function(i) which(x[i, ] >= data@minimum))
     userIDX <- lapply(userIDX, unname)
     #list of indices pointing to unrated items on each user 
-    userNOIDX <- lapply(1:row_x, function(i) which(is.na(x[i, ])))
+    userNOIDX <- lapply(1:row_x, function(i) which(x[i, ] < data@minimum))
     userNOIDX <- lapply(userNOIDX, unname)
     
     p <- U %*% t(V)
@@ -73,38 +80,39 @@ BPR <- function(data, k = 10, randomInit = FALSE, lambda = 0.05, regU = 0.0025, 
                 V[j, ] <- V[j, ] + lambda * (sigma0 * (-U[u, ]) - regJ * V[j, ])
             }
             
+            
         }
         
         p <- U %*% t(V)
         
     }  #convergence
     
-    p_BPR <- list(k = k, randomInit, lambda = lambda, regU = regU, regI = regI, regJ = regJ, updateJ = updateJ)
+    p_BPR <- list(k = k, 
+                  randomInit = randomInit, 
+                  lambda = lambda, 
+                  regU = regU, 
+                  regI = regI, 
+                  regJ = regJ, 
+                  updateJ = updateJ)
     
-    new("BPRclass", alg = "BPR", data = data, factors = list(U = U, V = V), parameters = p_BPR)
+    new("BPRclass", 
+        alg = "BPR", 
+        data = data, 
+        factors = list(U = U, V = V), 
+        parameters = p_BPR)
 }
 
 
-p_BPR <- list(k = 10, lambda = 0.05, regU = 0.0025, regI = 0.0025, regJ = 0.0025, updateJ = TRUE)
+p_BPR <- list(k = 10, 
+              lambda = 0.05, 
+              regU = 0.0025, 
+              regI = 0.0025, 
+              regJ = 0.0025, 
+              updateJ = TRUE)
+
+
 rrecsysRegistry$set_entry(alg = "BPR", 
                           fun = BPR, 
                           description = "Bayesian Personalized Ranking.", 
                           reference = "S. Rendle, C. Freudenthaler, Z. Gantner, and L. Schmidt-Thieme. BPR: Bayesian Personalized Ranking from Implicit Feedback.",
                           parameters = p_BPR) 
-
-
-
-# bpr prrediction####
-setMethod("predict", signature = c(model = "BPRclass"), function(model, Round = FALSE) {
-
-  
-  item_not_rated <- which(is.na(model@data@data))
-  
-  # generate predictions
-  p <- model@factors$U %*% t(model@factors$V)
-  
-  model@data@data[item_not_rated] <- p[item_not_rated]
-  
-  roundData(model@data, Round)
-})
-

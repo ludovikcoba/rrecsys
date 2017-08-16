@@ -1,0 +1,36 @@
+<!--
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{1.2 Evaluation}
+-->
+
+## Evaluation
+
+The evaluation module is based on the _k-fold cross-validation_ method. A _stratified_ random selection procedure is applied when dividing the _rated items_ of each user into $k$ folds such that each user's ratings are uniformly distributed in each fold, i.e., the number of ratings of each user in any fold differs at most by one. For k-fold cross validation each of the $k$ disjoint fractions of the ratings are used $k-1$ times for training (i.e., $R_{train}$) and once for testing (i.e. $R_{test}$). Practically, ratings in $R_{test}$ are set as missing in the original dataset and predictions/recommendations are compared to $R_{train}$ to compute the  performance measures.
+
+We included many popular performance metrics. These are mean absolute error (MAE), root mean square error(RMSE), Precision, Recall, F1, True and False Positives, True and False Negatives, normalized discounted cumulative gain (NDCG), rank score, area under the ROC curve (AUC) and catalog coverage. RMSE and MAE metrics are computed according to their two variants, user-based vs. global. The user-based variant weights each user uniformly by computing the metric for each user separately and averaging over all users while in the global variant users with larger test sets have more weight.
+
+To evaluate via _rrecsys_ we must start my creating the evaluation model:
+
+```{r, eval=FALSE}
+e <- evalModel(smallML, folds = 5)
+```
+rrecsys addresses the two most common scenarios in Recommender Systems:
+
+* Rating Prediction (e.g. on a scale of 1 to 5 stars), and
+* Item Recommendations (e.g. a list of top-N recommended items).
+
+To evaluate the task of Rating Prediction, the command is the following:
+```{r, eval=FALSE}
+evalPred(e, "ibknn", neigh = 5)
+```
+
+To evaluate the task of Item Recommendation, the command is the following:
+```{r, eval=FALSE}
+evalRec(e, "funk", k = 5, positiveThreshold = 3, topN = 3)
+```
+The _evalPred_ and _evalRec_ arguments correspond to the arguments of the algorithm that we want to evaluate. _evalRec_, obviously, has the _topN_ argument and two additional arguments. The _positiveThreshold_ that defines a threshold to distinguish between a negative rating and a positive rating. For the rank score metric we need to set the _alpha_ argument, which is the rankings half life.
+
+<!--To compute the AUC:
+```{r, eval=FALSE}
+getAUC(e, "globalAv")
+``` -->

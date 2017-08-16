@@ -14,7 +14,7 @@ Container for the model learned using any matrix factorization algorithm.
     \item{\code{alg}:}{The algorithm denominator, of class \code{"character"}.}
     \item{\code{data}:}{the dataset used for training the model, class \code{"matrix"}.}
     \item{\code{factors}:}{user(U) and items(V) factors, class \code{"list"}.}
-    \item{\code{parameters}:}{the parameters(such as number of factors \code{k}, learning rate \code{lambda}, regularization term \code{gamma} and number of iterations until \code{convergence}) used in the model, class \code{"list"}.}
+    \item{\code{parameters}:}{the parameters used in the model, class \code{"list"}.}
     \item{\code{baselines}:}{Global, user and item baselines, class \code{"list"}.}
   }
 }

@@ -1,5 +1,5 @@
-\name{nDCG}
-\alias{nDCG}
+\name{eval_nDCG}
+\alias{eval_nDCG}
 \title{
 Normalized Discounted Cumulative Gain
 }
@@ -7,7 +7,7 @@ Normalized Discounted Cumulative Gain
 Metric for information retrival where positions are discounted logarithmically.
 }
 \usage{
-nDCG(recommendedIDX, testSetIDX)
+eval_nDCG(recommendedIDX, testSetIDX)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

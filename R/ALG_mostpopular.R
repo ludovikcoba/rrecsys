@@ -14,7 +14,10 @@ mostpopular <- function(data) {
     ordered_index <- as.numeric(names(items_nr_ratings))
     
     
-    new("PPLclass", alg = "Popular", data = data, indices = ordered_index)
+    new("PPLclass", 
+        alg = "Popular", 
+        data = data, 
+        indices = ordered_index)
 }
 
 rrecsysRegistry$set_entry(alg = "Popular", 

@@ -1,6 +1,6 @@
 <!--
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{0. Introduction and Installing rrecsys}
+%\VignetteIndexEntry{0 Introduction and Installing rrecsys}
 -->
 
 ```{r setup, include=FALSE}
@@ -8,35 +8,40 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## rrecsys
-A package for R that provides implementations of several state-of-the-art recommendation systems. 
+This is a package in R that provides implementations of several baselines (Item/User Average and Most Popular Item Recommendation) and other well-known recommendation algorithms. 
+In particular, two main families of recommendation algorithms (i.e., Collaborative filtering and Matrix factorization) 
+are implemented, as shown in the following:
 
-Currently on rrecsys are developed the following non-personalized recommender systems (RS) algorithms:
+1. Collaborative filtering
 
-* Global Average
-* Item Average
-* User Average
-* Most popular
+* Weighted Slope One
+* User-based k-nearest neighbour
+* Item-based k-nearest neighbour
 
-Collaborative filtering:
+2. Matrix factorization
 
-* Item Based K-nearest neighbors
-* Simon Funk's SVD
+* Simon Funk's SVD with stochastic gradient descent
+* weighted Alternated Least Squares (wALS)
 * Bayesian Personalized Ranking (BPR)
-* Weighted Alternated Least Squares (wALS)
 
-rrecsys can be used to predict and recommend(top-N list) using any of the above algorithms. Algorithms work on both Likert scale and binary ratings but BPR and wALS are One-Class CF(OCCF) typical algorithms for implicit feedback. The package offers as well an evaluation methodology with the following standard metrics for the specific task:
+rrecsys addresses the two most common scenarios in Recommender Systems:
 
-* prediction: global or user based MAE and RMSE
-* recommendation: precision, recall, F1, NDCG, rank score and all the elements of the confusion matrix.
+* Rating Prediction (e.g. on a scale of 1 to 5 stars), and
+* Item Recommendations (e.g. a list of top-N recommended items).
+
+All algorithms can run on a user-item rating matrix that holds data of either item ratings (e.g., 1-5 rating scale) or item purchases/views (e.g., purchased item or not purchased item). The package offers as well an evaluation methodology with the following standard metrics for the specific task:
+
+* Rating Prediction task: global or user-based MAE and RMSE
+* Item Recommendation task: precision, recall, F1, NDCG, rank score and all the elements of the confusion matrix.
 
 ## Installation & Loading the package
-This section is dedicated to the recommender systems community with no experience in R. The package is available on CRAN and as well on [GitHub](https://github.com/ludovikcoba). Both versions are downloadable and installable. To install it from CRAN:
+The package is available on CRAN and as well on [GitHub](https://github.com/ludovikcoba). To install it from CRAN:
 
 ```{r, eval=FALSE}
 install.packages("rrecsys")
 ```
-Once the package is installed the usual thing to do would be to load it in the environment:
+Once the package is installed it can be loaded it in the environment:
 ```{r, eval=FALSE}
 library(rrecsys)
 ```
-Usually we try to keep updated both GitHub and CRAN with the same version of the package. The version on GitHub is intended for the developing community and we recommend to use it with RStudio. On another vignette will be given details on how to extend rrecsys.
+<!--Usually we try to keep updated both GitHub and CRAN with the same version of the package. The version on GitHub is intended for the developing community and we recommend to use it with RStudio.-->

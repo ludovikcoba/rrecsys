@@ -2,6 +2,7 @@
 \alias{predict}
 \alias{predict,BPRclass-method}
 \alias{predict,IBclass-method}
+\alias{predict,UBclass-method}
 \alias{predict,algAverageClass-method}
 \alias{predict,SVDclass-method}
 \alias{predict,wALSclass-method}
@@ -34,7 +35,7 @@ smallMl <- mlLatest100k[1:50, 1:100]
 
 exExpl <- defineData(smallMl)
 
-model1exp <- rrecsys(exExpl, alg = "funk", k = 10, gamma = 0.1, lambda = 0.001)
+model1exp <- rrecsys(exExpl, alg = "funk", k = 10, learningRate = 0.01, regCoef = 0.001)
 
 pre1 <- predict(model1exp, Round = TRUE) 
 }

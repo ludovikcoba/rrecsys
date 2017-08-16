@@ -5,43 +5,233 @@
 
 using namespace Rcpp;
 
-// FSVDupdater
-List FSVDupdater(NumericMatrix ratingMat, NumericMatrix U, NumericMatrix V, double gamma, double lambda, List itemIdx, int nrfeat, int feat, double globalbaseline, NumericVector baseline_users, NumericVector baseline_items, double minimum, double maximum);
-RcppExport SEXP rrecsys_FSVDupdater(SEXP ratingMatSEXP, SEXP USEXP, SEXP VSEXP, SEXP gammaSEXP, SEXP lambdaSEXP, SEXP itemIdxSEXP, SEXP nrfeatSEXP, SEXP featSEXP, SEXP globalbaselineSEXP, SEXP baseline_usersSEXP, SEXP baseline_itemsSEXP, SEXP minimumSEXP, SEXP maximumSEXP) {
+// FSVDupdaterBiases
+List FSVDupdaterBiases(NumericMatrix ratingMat, double learningRate, double regCoef, List itemIdx, int nrfeat, int steps, double globalbaseline);
+RcppExport SEXP _rrecsys_FSVDupdaterBiases(SEXP ratingMatSEXP, SEXP learningRateSEXP, SEXP regCoefSEXP, SEXP itemIdxSEXP, SEXP nrfeatSEXP, SEXP stepsSEXP, SEXP globalbaselineSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type ratingMat(ratingMatSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type U(USEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type V(VSEXP);
-    Rcpp::traits::input_parameter< double >::type gamma(gammaSEXP);
-    Rcpp::traits::input_parameter< double >::type lambda(lambdaSEXP);
+    Rcpp::traits::input_parameter< double >::type learningRate(learningRateSEXP);
+    Rcpp::traits::input_parameter< double >::type regCoef(regCoefSEXP);
     Rcpp::traits::input_parameter< List >::type itemIdx(itemIdxSEXP);
     Rcpp::traits::input_parameter< int >::type nrfeat(nrfeatSEXP);
-    Rcpp::traits::input_parameter< int >::type feat(featSEXP);
+    Rcpp::traits::input_parameter< int >::type steps(stepsSEXP);
     Rcpp::traits::input_parameter< double >::type globalbaseline(globalbaselineSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type baseline_users(baseline_usersSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type baseline_items(baseline_itemsSEXP);
-    Rcpp::traits::input_parameter< double >::type minimum(minimumSEXP);
-    Rcpp::traits::input_parameter< double >::type maximum(maximumSEXP);
-    rcpp_result_gen = Rcpp::wrap(FSVDupdater(ratingMat, U, V, gamma, lambda, itemIdx, nrfeat, feat, globalbaseline, baseline_users, baseline_items, minimum, maximum));
+    rcpp_result_gen = Rcpp::wrap(FSVDupdaterBiases(ratingMat, learningRate, regCoef, itemIdx, nrfeat, steps, globalbaseline));
+    return rcpp_result_gen;
+END_RCPP
+}
+// FSVDupdater
+List FSVDupdater(NumericMatrix ratingMat, double learningRate, double regCoef, List itemIdx, int nrfeat, int steps);
+RcppExport SEXP _rrecsys_FSVDupdater(SEXP ratingMatSEXP, SEXP learningRateSEXP, SEXP regCoefSEXP, SEXP itemIdxSEXP, SEXP nrfeatSEXP, SEXP stepsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type ratingMat(ratingMatSEXP);
+    Rcpp::traits::input_parameter< double >::type learningRate(learningRateSEXP);
+    Rcpp::traits::input_parameter< double >::type regCoef(regCoefSEXP);
+    Rcpp::traits::input_parameter< List >::type itemIdx(itemIdxSEXP);
+    Rcpp::traits::input_parameter< int >::type nrfeat(nrfeatSEXP);
+    Rcpp::traits::input_parameter< int >::type steps(stepsSEXP);
+    rcpp_result_gen = Rcpp::wrap(FSVDupdater(ratingMat, learningRate, regCoef, itemIdx, nrfeat, steps));
+    return rcpp_result_gen;
+END_RCPP
+}
+// FSVDupdaterSparseMatBiases
+List FSVDupdaterSparseMatBiases(NumericMatrix sparseRatingMat, double learningRate, double regCoef, int nrfeat, int steps, int nr_users, int nr_items, double globalbaseline);
+RcppExport SEXP _rrecsys_FSVDupdaterSparseMatBiases(SEXP sparseRatingMatSEXP, SEXP learningRateSEXP, SEXP regCoefSEXP, SEXP nrfeatSEXP, SEXP stepsSEXP, SEXP nr_usersSEXP, SEXP nr_itemsSEXP, SEXP globalbaselineSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type sparseRatingMat(sparseRatingMatSEXP);
+    Rcpp::traits::input_parameter< double >::type learningRate(learningRateSEXP);
+    Rcpp::traits::input_parameter< double >::type regCoef(regCoefSEXP);
+    Rcpp::traits::input_parameter< int >::type nrfeat(nrfeatSEXP);
+    Rcpp::traits::input_parameter< int >::type steps(stepsSEXP);
+    Rcpp::traits::input_parameter< int >::type nr_users(nr_usersSEXP);
+    Rcpp::traits::input_parameter< int >::type nr_items(nr_itemsSEXP);
+    Rcpp::traits::input_parameter< double >::type globalbaseline(globalbaselineSEXP);
+    rcpp_result_gen = Rcpp::wrap(FSVDupdaterSparseMatBiases(sparseRatingMat, learningRate, regCoef, nrfeat, steps, nr_users, nr_items, globalbaseline));
+    return rcpp_result_gen;
+END_RCPP
+}
+// FSVDupdaterSparseMat
+List FSVDupdaterSparseMat(NumericMatrix sparseRatingMat, double learningRate, double regCoef, int nrfeat, int steps, int nr_users, int nr_items);
+RcppExport SEXP _rrecsys_FSVDupdaterSparseMat(SEXP sparseRatingMatSEXP, SEXP learningRateSEXP, SEXP regCoefSEXP, SEXP nrfeatSEXP, SEXP stepsSEXP, SEXP nr_usersSEXP, SEXP nr_itemsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type sparseRatingMat(sparseRatingMatSEXP);
+    Rcpp::traits::input_parameter< double >::type learningRate(learningRateSEXP);
+    Rcpp::traits::input_parameter< double >::type regCoef(regCoefSEXP);
+    Rcpp::traits::input_parameter< int >::type nrfeat(nrfeatSEXP);
+    Rcpp::traits::input_parameter< int >::type steps(stepsSEXP);
+    Rcpp::traits::input_parameter< int >::type nr_users(nr_usersSEXP);
+    Rcpp::traits::input_parameter< int >::type nr_items(nr_itemsSEXP);
+    rcpp_result_gen = Rcpp::wrap(FSVDupdaterSparseMat(sparseRatingMat, learningRate, regCoef, nrfeat, steps, nr_users, nr_items));
+    return rcpp_result_gen;
+END_RCPP
+}
+// itemMFCount
+NumericVector itemMFCount(NumericMatrix sim_index, NumericVector user_vector, double pt);
+RcppExport SEXP _rrecsys_itemMFCount(SEXP sim_indexSEXP, SEXP user_vectorSEXP, SEXP ptSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type sim_index(sim_indexSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type user_vector(user_vectorSEXP);
+    Rcpp::traits::input_parameter< double >::type pt(ptSEXP);
+    rcpp_result_gen = Rcpp::wrap(itemMFCount(sim_index, user_vector, pt));
     return rcpp_result_gen;
 END_RCPP
 }
 // ItemSimil
-NumericMatrix ItemSimil(NumericMatrix x);
-RcppExport SEXP rrecsys_ItemSimil(SEXP xSEXP) {
+NumericMatrix ItemSimil(NumericMatrix x, int DAMP);
+RcppExport SEXP _rrecsys_ItemSimil(SEXP xSEXP, SEXP DAMPSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(ItemSimil(x));
+    Rcpp::traits::input_parameter< int >::type DAMP(DAMPSEXP);
+    rcpp_result_gen = Rcpp::wrap(ItemSimil(x, DAMP));
+    return rcpp_result_gen;
+END_RCPP
+}
+// ItemSimilSparseMat
+NumericMatrix ItemSimilSparseMat(NumericMatrix x, int dim, int DAMP);
+RcppExport SEXP _rrecsys_ItemSimilSparseMat(SEXP xSEXP, SEXP dimSEXP, SEXP DAMPSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
+    Rcpp::traits::input_parameter< int >::type dim(dimSEXP);
+    Rcpp::traits::input_parameter< int >::type DAMP(DAMPSEXP);
+    rcpp_result_gen = Rcpp::wrap(ItemSimilSparseMat(x, dim, DAMP));
+    return rcpp_result_gen;
+END_RCPP
+}
+// predictIB
+NumericVector predictIB(NumericMatrix data, NumericMatrix s, NumericMatrix simIndexKNN, NumericMatrix simil, int neigh, int maximum, int minimum, NumericVector ItMeans, bool clamp);
+RcppExport SEXP _rrecsys_predictIB(SEXP dataSEXP, SEXP sSEXP, SEXP simIndexKNNSEXP, SEXP similSEXP, SEXP neighSEXP, SEXP maximumSEXP, SEXP minimumSEXP, SEXP ItMeansSEXP, SEXP clampSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type s(sSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type simIndexKNN(simIndexKNNSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type simil(similSEXP);
+    Rcpp::traits::input_parameter< int >::type neigh(neighSEXP);
+    Rcpp::traits::input_parameter< int >::type maximum(maximumSEXP);
+    Rcpp::traits::input_parameter< int >::type minimum(minimumSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type ItMeans(ItMeansSEXP);
+    Rcpp::traits::input_parameter< bool >::type clamp(clampSEXP);
+    rcpp_result_gen = Rcpp::wrap(predictIB(data, s, simIndexKNN, simil, neigh, maximum, minimum, ItMeans, clamp));
+    return rcpp_result_gen;
+END_RCPP
+}
+// predictUB
+NumericVector predictUB(NumericMatrix data, NumericMatrix s, NumericMatrix simIndexKNN, NumericMatrix simil, int neigh, int maximum, int minimum, NumericVector UsrMeans, bool clamp);
+RcppExport SEXP _rrecsys_predictUB(SEXP dataSEXP, SEXP sSEXP, SEXP simIndexKNNSEXP, SEXP similSEXP, SEXP neighSEXP, SEXP maximumSEXP, SEXP minimumSEXP, SEXP UsrMeansSEXP, SEXP clampSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type s(sSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type simIndexKNN(simIndexKNNSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type simil(similSEXP);
+    Rcpp::traits::input_parameter< int >::type neigh(neighSEXP);
+    Rcpp::traits::input_parameter< int >::type maximum(maximumSEXP);
+    Rcpp::traits::input_parameter< int >::type minimum(minimumSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type UsrMeans(UsrMeansSEXP);
+    Rcpp::traits::input_parameter< bool >::type clamp(clampSEXP);
+    rcpp_result_gen = Rcpp::wrap(predictUB(data, s, simIndexKNN, simil, neigh, maximum, minimum, UsrMeans, clamp));
+    return rcpp_result_gen;
+END_RCPP
+}
+// predictUBSparse
+NumericVector predictUBSparse(NumericMatrix data, int dim, NumericMatrix s, NumericMatrix simIndexKNN, NumericMatrix simil, int neigh, int maximum, int minimum, NumericVector UsrMeans, bool clamp);
+RcppExport SEXP _rrecsys_predictUBSparse(SEXP dataSEXP, SEXP dimSEXP, SEXP sSEXP, SEXP simIndexKNNSEXP, SEXP similSEXP, SEXP neighSEXP, SEXP maximumSEXP, SEXP minimumSEXP, SEXP UsrMeansSEXP, SEXP clampSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< int >::type dim(dimSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type s(sSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type simIndexKNN(simIndexKNNSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type simil(similSEXP);
+    Rcpp::traits::input_parameter< int >::type neigh(neighSEXP);
+    Rcpp::traits::input_parameter< int >::type maximum(maximumSEXP);
+    Rcpp::traits::input_parameter< int >::type minimum(minimumSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type UsrMeans(UsrMeansSEXP);
+    Rcpp::traits::input_parameter< bool >::type clamp(clampSEXP);
+    rcpp_result_gen = Rcpp::wrap(predictUBSparse(data, dim, s, simIndexKNN, simil, neigh, maximum, minimum, UsrMeans, clamp));
+    return rcpp_result_gen;
+END_RCPP
+}
+// predictUVBiases
+NumericVector predictUVBiases(NumericMatrix s, NumericMatrix U, NumericMatrix V, int minimum, int maximum, double blglo, NumericVector blusr, NumericVector blitm, bool clamp);
+RcppExport SEXP _rrecsys_predictUVBiases(SEXP sSEXP, SEXP USEXP, SEXP VSEXP, SEXP minimumSEXP, SEXP maximumSEXP, SEXP blgloSEXP, SEXP blusrSEXP, SEXP blitmSEXP, SEXP clampSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type s(sSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type U(USEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type V(VSEXP);
+    Rcpp::traits::input_parameter< int >::type minimum(minimumSEXP);
+    Rcpp::traits::input_parameter< int >::type maximum(maximumSEXP);
+    Rcpp::traits::input_parameter< double >::type blglo(blgloSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type blusr(blusrSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type blitm(blitmSEXP);
+    Rcpp::traits::input_parameter< bool >::type clamp(clampSEXP);
+    rcpp_result_gen = Rcpp::wrap(predictUVBiases(s, U, V, minimum, maximum, blglo, blusr, blitm, clamp));
+    return rcpp_result_gen;
+END_RCPP
+}
+// predictUV
+NumericVector predictUV(NumericMatrix s, NumericMatrix U, NumericMatrix V, int minimum, int maximum, bool clamp);
+RcppExport SEXP _rrecsys_predictUV(SEXP sSEXP, SEXP USEXP, SEXP VSEXP, SEXP minimumSEXP, SEXP maximumSEXP, SEXP clampSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type s(sSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type U(USEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type V(VSEXP);
+    Rcpp::traits::input_parameter< int >::type minimum(minimumSEXP);
+    Rcpp::traits::input_parameter< int >::type maximum(maximumSEXP);
+    Rcpp::traits::input_parameter< bool >::type clamp(clampSEXP);
+    rcpp_result_gen = Rcpp::wrap(predictUV(s, U, V, minimum, maximum, clamp));
+    return rcpp_result_gen;
+END_RCPP
+}
+// UserSimil
+NumericMatrix UserSimil(NumericMatrix x, int damp);
+RcppExport SEXP _rrecsys_UserSimil(SEXP xSEXP, SEXP dampSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
+    Rcpp::traits::input_parameter< int >::type damp(dampSEXP);
+    rcpp_result_gen = Rcpp::wrap(UserSimil(x, damp));
+    return rcpp_result_gen;
+END_RCPP
+}
+// UserSimilSparseMat
+NumericMatrix UserSimilSparseMat(NumericMatrix x, int dim, int damp);
+RcppExport SEXP _rrecsys_UserSimilSparseMat(SEXP xSEXP, SEXP dimSEXP, SEXP dampSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
+    Rcpp::traits::input_parameter< int >::type dim(dimSEXP);
+    Rcpp::traits::input_parameter< int >::type damp(dampSEXP);
+    rcpp_result_gen = Rcpp::wrap(UserSimilSparseMat(x, dim, damp));
     return rcpp_result_gen;
 END_RCPP
 }
 // weightedSlopeOneRM
 List weightedSlopeOneRM(NumericMatrix x);
-RcppExport SEXP rrecsys_weightedSlopeOneRM(SEXP xSEXP) {
+RcppExport SEXP _rrecsys_weightedSlopeOneRM(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -49,4 +239,28 @@ BEGIN_RCPP
     rcpp_result_gen = Rcpp::wrap(weightedSlopeOneRM(x));
     return rcpp_result_gen;
 END_RCPP
+}
+
+static const R_CallMethodDef CallEntries[] = {
+    {"_rrecsys_FSVDupdaterBiases", (DL_FUNC) &_rrecsys_FSVDupdaterBiases, 7},
+    {"_rrecsys_FSVDupdater", (DL_FUNC) &_rrecsys_FSVDupdater, 6},
+    {"_rrecsys_FSVDupdaterSparseMatBiases", (DL_FUNC) &_rrecsys_FSVDupdaterSparseMatBiases, 8},
+    {"_rrecsys_FSVDupdaterSparseMat", (DL_FUNC) &_rrecsys_FSVDupdaterSparseMat, 7},
+    {"_rrecsys_itemMFCount", (DL_FUNC) &_rrecsys_itemMFCount, 3},
+    {"_rrecsys_ItemSimil", (DL_FUNC) &_rrecsys_ItemSimil, 2},
+    {"_rrecsys_ItemSimilSparseMat", (DL_FUNC) &_rrecsys_ItemSimilSparseMat, 3},
+    {"_rrecsys_predictIB", (DL_FUNC) &_rrecsys_predictIB, 9},
+    {"_rrecsys_predictUB", (DL_FUNC) &_rrecsys_predictUB, 9},
+    {"_rrecsys_predictUBSparse", (DL_FUNC) &_rrecsys_predictUBSparse, 10},
+    {"_rrecsys_predictUVBiases", (DL_FUNC) &_rrecsys_predictUVBiases, 9},
+    {"_rrecsys_predictUV", (DL_FUNC) &_rrecsys_predictUV, 6},
+    {"_rrecsys_UserSimil", (DL_FUNC) &_rrecsys_UserSimil, 2},
+    {"_rrecsys_UserSimilSparseMat", (DL_FUNC) &_rrecsys_UserSimilSparseMat, 3},
+    {"_rrecsys_weightedSlopeOneRM", (DL_FUNC) &_rrecsys_weightedSlopeOneRM, 1},
+    {NULL, NULL, 0}
+};
+
+RcppExport void R_init_rrecsys(DllInfo *dll) {
+    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+    R_useDynamicSymbols(dll, FALSE);
 }

@@ -34,19 +34,19 @@ F. Ricci, L. Rokach, B. Shapira, and P. B. Kantor, editors. \emph{Recommender Sy
   \code{\link{evalModel-class}}, \code{\link{rrecsys}}.
 }
 \examples{
-  x <- matrix(sample(c(0,1), size = 200, replace = TRUE, 
-        prob = c(.8,.2)), nrow = 20, byrow = TRUE)
+    x <- matrix(sample(c(0:5), size = 200, replace = TRUE, 
+        prob = c(.6,.8,.8,.8,.8,.8)), nrow = 20, byrow = TRUE)
   
   x <- defineData(x)
         
-  e <- evalModel(x, 5)
+  e <- evalModel(x, 2)
   
   SVDEvaluation <- evalPred(e, "FunkSVD", k = 4) 
   
   SVDEvaluation         
   
   
-  IBEvaluation <- evalPred(e, "IBKNN", simFunct = 1, neigh = 5)
+  IBEvaluation <- evalPred(e, "IBKNN", simFunct = "cos", neigh = 5, coRatedThreshold = 2)
   
   IBEvaluation
   

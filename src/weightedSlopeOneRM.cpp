@@ -1,10 +1,9 @@
 #include <Rcpp.h>
 using namespace Rcpp;
-
 // [[Rcpp::export]]
-
 List weightedSlopeOneRM(NumericMatrix x) {
 
+  
   int nc = x.ncol();
   int nr = x.nrow();
   int coRated;

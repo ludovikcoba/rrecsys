@@ -14,6 +14,7 @@ Container for the model learned by an unpersonalized popularity-based algorithm.
     \item{\code{alg}:}{The algorithm denominator, of class \code{"character"}.}
     \item{\code{data}:}{the dataset used for training the model, class \code{"matrix"}.}
     \item{\code{indices}:}{the indices of items ordered by popularity, class \code{"integer"}.}
+    \item{\code{parameters}:}{the parameters used in the model, class \code{"list"}.}
     }
 }
 \section{Methods}{

@@ -3,26 +3,39 @@
 %\VignetteIndexEntry{2.2 Item-based k-nearest neighbors}
 -->
 
-```{r global_options, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-library(rrecsys)
-data("mlLatest100k")
-ML <- defineData(mlLatest100k, minimum = .5, maximum = 5, halfStar = TRUE)
-smallML <- ML[rowRatings(ML)>=250, colRatings(ML)>=150]
-```
 
 ## Item-based k-nearest neighbors in rrecsys
 
-Given a target user and her positively rated items, the algorithm will identify the k-most similar items for each target _a_ and will rank them according to aggregated similarities with the different targets as described by Sarwar et al. The similarity is measured based on three algorithms: cosine(simFunct =1), adjuted cosine(simFunct = 2) and Pearson Correlation(simFunct = 3).
+Given a target user and her positively (i.e., above a pre-defined threshold) rated items, the algorithm relies on the items' similarities for the formation of a neighborhood of nearest items.
 
-To train a model with this algorithm is required to define an additional argument, _neigh_ the neighborhood size.
-```{r}
-ibknn <- rrecsys(smallML, "ibknn", simFunct = 1, neigh = 20)
-ibknn
+The choice of the k nearest neighbors for the neighborhood formation results in a tradeoff:
+a very small k leads to few candidate items that can be recommended because there are not a lot of neighbors to support the predictions. In contrast, a very large k impacts precision as the particularities of user's preferences can be blunted due to the large neighborhood size. In most related works k has been set to be in the range of values from 10 to 100, where the optimum k also depends on data characteristics such as sparsity. 
+
+ The similarity is measured based on two algorithms: cosine(simFunct ='cos') and adjusted cosine(simFunct = 'adjCos').
+
+For the Rating Prediction task, to train a model with this algorithm, it is required to define an additional argument, _neigh_ the neighborhood size.
+```{r, eval=FALSE}
+data("ml100k")
+d <- defineData(ml100k)
+e <- evalModel(d, folds = 2)
+ib_model_res <- evalPred(e, "ibknn", simFunct = "cos", neigh = 10)
 ```
+For the Item Recommendation task, to provide item recommendations, it is required to define two additional arguments, _positiveThreshold_  the threshold for "positive" ratings, and the _topN_ the number of recommended items.
+ 
+```{r, eval=FALSE}
+data("ml100k")
+d <- defineData(ml100k)
+e <- evalModel(d, folds = 2)
+ib_model_res <- evalRec(e, "ibknn", simFunct = "cos", neigh = 10, positiveThreshold = 3, topN = 3)
+```
+
+
 The _neigh_ default value is 10.
+The _positiveThreshold_ default value is 3.
+The _topN_ default value is 3.
+
 
 The returned object is of type _IBclass_. 
 
-To get more details about the slots read the reference [manual](https://cran.r-project.org/web/packages/rrecsys/rrecsys.pdf).
+To get more details about the slots read the reference [manual](https://CRAN.R-project.org/package=rrecsys).
 

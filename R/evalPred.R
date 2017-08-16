@@ -1,80 +1,135 @@
 setMethod("evalPred", signature = c(model = "evalModel"), function(model, alg = NULL, ...) {
     
     if (is.null(alg)) {
+      
         stop("Evaluation on recommendations cannot proceed if argument alg and is not specified.")
+      
     }
-    
-    nusers <- nrow(model@data)
-    
-    #user based RMSE & MAE
-    uRMSE <- c()
-    uMAE <- c()
-    #global RMSE & MAE
-    gRMSE <- c()
-    gMAE <- c()
-    
-    for (i in 1:model@folds) {
-        
-        ptm <- Sys.time()
-        
-        copy_data <- model@data
-        copy_data@data[model@fold_indices[[i]]] <- NA
-        
-        copy_data@data <- matrix(copy_data@data, nusers)
-        
-        r <- rrecsys(copy_data, alg = alg, ...)
-        
-        # mae & rmse on user
-        predictions <- predict(r, Round = FALSE)
-        
-        # calculation on MAE and RMSE on each user
-        users_rmse <- 0
-        users_mae <- 0
-
-        for (n in 1:nrow(model@data)) {
-          #error on rating
-          e <- model@data@data[n, model@fold_indices_x_user[[n]][[i]]] -
-               predictions[n, model@fold_indices_x_user[[n]][[i]]]
-
-          if(length(e) == 0) next
-          
-          users_rmse <- users_rmse + sqrt(mean(e^2))
-          users_mae <- users_mae + mean(abs(e))
-        }
-        # derivate an average MAE and RMSE for the users
-        uRMSE <- c(uRMSE, users_rmse/nusers)
-        uMAE <- c(uMAE, users_mae/nusers)
-        
-        # calculation on global MAE and RMSE
-        e <- model@data@data[model@fold_indices[[i]]] -
-             predictions[model@fold_indices[[i]]]
-
-        mae_i <- mean(abs(e))
-        
-        rmse_i <- sqrt(mean(e^2))
-        
-        gMAE <- c(gMAE, mae_i)
-        gRMSE <- c(gRMSE, rmse_i)
-        
+  d <- model@data
+  nusers <- nrow(d)
+  folds <- model@folds
   
-        cat("\nFold:", i, "/", model@folds, " elapsed. Time:", as.numeric(Sys.time() - ptm, units = "secs"), "\n\n")
+  #user based RMSE & MAE
+  uRMSE <- c()
+  uMAE <- c()
+  #global RMSE & MAE
+  gRMSE <- c()
+  gMAE <- c()
+  
+  ex.time <- c()
+  
+  for (i in 1:folds) {
+    
+    ptm <- Sys.time()
+    
+    testSetIDX <- model@fold_indices[[i]]
+    
+    x <- removeScores(d, testSetIDX)
+    
+    cat("Train set", 
+        i, "/", folds, 
+        "created with ", 
+        nrow(x), "users, ", 
+        ncol(x),"items and ", 
+        numRatings(x), " ratings.\n")
+    
+    r <- rrecsys(x, alg = alg, ...)
+    
 
+    # mae & rmse on user
+    # s is a pair of the coordinates of all the user item ratings in the test set.
+    
+    users_rmse <- 0
+    users_mae <- 0
+    
+    if(class(d) == "sparseDataSet"){
+      
+      s <- d@data[testSetIDX, 1:2]
+      
+      predictions <- predict(r, Round = FALSE, s = s, clamp = TRUE)
+      
+      er <- d@data$score[testSetIDX] - predictions
+      
+      
+    }else{
+      
+      
+      
+      s <- sapply(testSetIDX, function(t) if(t%%nusers != 0) {c(t%%nusers, t%/%nusers + 1)}else{c(nusers, t%/%nusers)})
+      s <- data.frame(user = s[1,], item = s[2,])
+      
+    
+      #Last row mod nusers is 0, to avoid error i subtitute them with the right line.
+      s$user[which(s$user == 0)] <- nusers
+    
+      predictions <- predict(r, Round = FALSE, s = s, clamp = TRUE)
+
+      er <- d@data[testSetIDX] - predictions
+      
+    }
+  
+    for (n in unique(s$user)) {
+      
+      #error on rating
+      u <- which(s$user == n)
+      #browser()
+      users_rmse <- users_rmse + sqrt(mean(er[u]^2))
+      users_mae <- users_mae + mean(abs(er[u]))
+      
     }
     
-    # average on folds
-    uRMSE <- c(uRMSE, mean(uRMSE))
-    uMAE <- c(uMAE, mean(uMAE))
-    gRMSE <- c(gRMSE, mean(gRMSE))
-    gMAE <- c(gMAE, mean(gMAE))
+    # derivate an average MAE and RMSE for the users
+    uRMSE <- c(uRMSE, users_rmse/nusers)
+    uMAE <- c(uMAE, users_mae/nusers)
     
-
-    names(uRMSE) <- c(paste0(1:model@folds, rep("-fold", model@folds)), "Average")
-    names(uMAE) <- c(paste0(1:model@folds, rep("-fold", model@folds)), "Average")
-    names(gRMSE) <- c(paste0(1:model@folds, rep("-fold", model@folds)), "Average")
-    names(gMAE) <- c(paste0(1:model@folds, rep("-fold", model@folds)), "Average")
+    # calculation on global MAE and RMSE
     
-    show(r)
-    cat("\n")
-    as.data.frame(list(MAE = uMAE, RMSE = uRMSE, globalMAE = gMAE, globalRMSE = gRMSE))
+    mae_i <- mean(abs(er))
     
+    rmse_i <- sqrt(mean(er^2))
+    
+    gMAE <- c(gMAE, mae_i)
+    gRMSE <- c(gRMSE, rmse_i)
+    
+    ex.time <- c(ex.time, as.numeric(Sys.time() - ptm, units = "secs"))
+    
+    cat("\nFold:", i, "/", folds, " elapsed. Time:", as.numeric(Sys.time() - ptm, units = "secs"), "\n\n")
+    
+  }
+  
+  # average on folds
+  uRMSE <- c(uRMSE, mean(uRMSE))
+  uMAE <- c(uMAE, mean(uMAE))
+  gRMSE <- c(gRMSE, mean(gRMSE))
+  gMAE <- c(gMAE, mean(gMAE))
+  ex.time <- c(ex.time, mean(ex.time))
+  
+  names(uRMSE) <- c(paste0(1:folds, rep("-fold", folds)), "Average")
+  names(uMAE) <- c(paste0(1:folds, rep("-fold", folds)), "Average")
+  names(gRMSE) <- c(paste0(1:folds, rep("-fold", folds)), "Average")
+  names(gMAE) <- c(paste0(1:folds, rep("-fold", folds)), "Average")
+  names(ex.time) <- c(paste0(1:folds, rep("-fold", folds)), "Average")
+  
+  show(r)
+  
+  cat("\n")
+  
+  as.data.frame(list(
+    MAE = uMAE, 
+    RMSE = uRMSE, 
+    globalMAE = gMAE, 
+    globalRMSE = gRMSE, 
+    Time = ex.time ))
+  
 }) 
+
+
+
+
+
+
+
+
+
+
+

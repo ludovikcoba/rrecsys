@@ -1,0 +1,43 @@
+<!--
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{2.3 User-based k-nearest neighbors}
+-->
+
+
+## User-based k-nearest neighbors in rrecsys
+
+Given a target user and her positively rated items, the algorithm will identify the $k$-most similar users of the target user. 
+
+The choice of the $k$ nearest neighbors for the neighborhood formation results in a tradeoff:
+a very small $k$ leads to few candidate items that can be recommended because there are not a lot of neighbors to support the predictions. In contrast, a very large $k$ impacts precision as the particularities of user's preferences can be blunted due to the large neighborhood size. In most related works $k$ has been set to be in the range of values from 10 to 100, where the optimum $k$ also depends on data characteristics such as sparsity. 
+
+
+The similarity is measured based on three algorithms: cosine(simFunct ='cos'), adjusted cosine(simFunct = 'AdjCos') and Pearson Correlation(simFunct = 'Pearson').
+
+For the Rating Prediction task, to train a model with this algorithm, it is required to define an additional argument, _neigh_ the neighborhood size.
+```{r, eval=FALSE}
+data("ml100k")
+d <- defineData(ml100k)
+e <- evalModel(d, folds = 2)
+evalPred(e, "ubknn", simFunct = "Pearson", neigh = 10)
+```
+For the Item Recommendation task, to provide item recommendations, it is required to define two additional arguments, _positiveThreshold_  the threshold for "positive" ratings, and the _topN_ the number of recommended items.
+ 
+```{r, eval=FALSE}
+data("ml100k")
+d <- defineData(ml100k)
+e <- evalModel(d, folds = 2)
+evalRec(e, "ubknn", simFunct = "Pearson", neigh = 10, positiveThreshold = 3, topN = 3)
+```
+
+
+The _neigh_ default value is 10.
+The _positiveThreshold_ default value is 3.
+The _topN_ default value is 10.
+
+
+
+The returned object is of type _UBclass_. 
+
+To get more details about the slots read the reference [manual](https://CRAN.R-project.org/package=rrecsys).
+

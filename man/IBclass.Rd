@@ -15,7 +15,7 @@ Container for the model learned using any k-nearest neighbor item-based collabor
     \item{\code{data}:}{the dataset used for training the model, class \code{"matrix"}.}
     \item{\code{sim}:}{The item - item similarity matrix, class \code{"matrix"}.}
     \item{\code{sim_index_kNN}:}{The index of the k nearest neighbors for each item, class \code{"matrix"}.}
-    \item{\code{neigh}:}{The size of the neighborhood, class \code{"numeric"}.}
+    \item{\code{parameters}:}{the parameters used in the model, class \code{"list"}.}
     }
 }
 \section{Methods}{

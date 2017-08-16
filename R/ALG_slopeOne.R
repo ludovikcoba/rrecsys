@@ -1,5 +1,14 @@
 # ref: Daniel Lemire, Anna MaclachlanSlope One Predictors for Online Rating-Based Collaborative Filtering.
 
+setClass('slopeOneClass', representation( alg = "character", 
+                                            data = "dataSet", 
+                                            devcard = "list" )) 
+setMethod("show", signature(object = "slopeOneClass"), function(object) {
+  cat("The model was trained on the dataset using ", object@alg, "algorithm.")
+})
+
+
+
 slopeOne <- function(data) { 
 
   x <- data@data
@@ -22,7 +31,7 @@ rrecsysRegistry$set_entry(alg = "slopeOne", # the algorithm bane for the dispach
                           parameters = NA) #argument with default values separated by comma.
 
 
-setMethod("predict", signature = c(model = "slopeOneClass"), function(model, Round = FALSE) {
+setMethod("predict", signature = c(model = "slopeOneClass"), function(model, Round = FALSE, s) {
   
   data <- model@data
   x <- data@data
@@ -32,6 +41,28 @@ setMethod("predict", signature = c(model = "slopeOneClass"), function(model, Rou
   Deviation <- model@devcard$Deviation
   Cardinality <- model@devcard$Cardinality
   
+  if(missing(s)){
+    for(m in 1:nrow(data)){
+      
+      not_ratedIDX <- which(is.na(x[m, ]))
+      ratedIDX <- which(!is.na(x[m, ] != 0))
+      
+      for(j in not_ratedIDX){
+        denom <- sum(Cardinality[j, ratedIDX])
+        
+        if(denom !=0){
+          x[m ,j] <- sum((Deviation[j, ratedIDX] + x[m ,ratedIDX]) * Cardinality[j, ratedIDX]) / denom
+        }
+        
+      }
+    }
+    
+
+    data@data <- x
+    
+    roundData(data, Round)
+  }else{
+    
     p <- c()
     
     s <- s[order(s$user),]
@@ -63,5 +94,6 @@ setMethod("predict", signature = c(model = "slopeOneClass"), function(model, Rou
       }
     
     p
+  }
 
 }) 

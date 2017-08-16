@@ -3,25 +3,47 @@
 %\VignetteIndexEntry{2.4 Simon Funk's SVD}
 -->
 
-```{r global_options, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-library(rrecsys)
-data("mlLatest100k")
-ML <- defineData(mlLatest100k, minimum = .5, maximum = 5, halfStar = TRUE)
-smallML <- ML[rowRatings(ML)>=250, colRatings(ML)>=150]
-```
+## Simon Funk's Matrix Factorization
 
-## Simon Funk's SVD
+We implemented the well-known matrix factorization algorithm as proposed by Simon Funk. 
 
-We implemented the basic but popular SVD algorithm by Simon Funk. The dimensionality of the user-item matrix is reduced to the _k_ strongest signals using the stochastic gradient descent optimization technique. Each feature weight in the $users \times k$ and $k \times items$ matrices are updated until the preset convergence criteria is met. Implementing FunkSVD in R turned out to be quite challenging due to the algorithm's structure with nested loops and R's inability to perform well under this circumstance. Since R supports array programming and performs very well under it, we kept the structure of the algorithm but vectorized as much as possible update loops.
+Matrix factorization methods are used in recommender systems to derive a set of latent factors, from the original user-item rating matrix, to characterize both users and items by these vectors of user and item factors. The user-item interaction is modeled as the inner product of the latent factors space. Accordingly each item i will be associated with a vector factor V_i, and each user u is associated with a vector factors U_u. An approximation of the rating of a user $u$ on an item $i$ can be derived as the 
+inner product of their item and user factor vectors.
 
-To train a model using this algorithm:
+The rrecsys package utilizes a stochastic gradient descent optimization technique for computing the item and user factors. The U(user) and V(item) factor matrices are cropped to k features.  Each feature is trained until convergence. 
+
+For the Rating Prediction task, to train a model with this algorithm, it is required to define an additional argument, _k_ the number of user/item factors.
 ```{r, eval=FALSE}
-svd <- rrecsys(smallML, "FunkSVD", k = 10, gamma = .015, lambda = .001)
-svd
+data("ml100k")
+d <- defineData(ml100k)
+e <- evalModel(d, folds = 2)
+mf_model <- evalPred(e, "funk", k = 10, steps = 100, regCoef = 0.0001, learningRate = 0.001, biases = F)
+mf_model
 ```
-_k_ is he number of features, _gamma_ the regularization term and _lambda_ the learning rate. The above call is configured to the default values.
+For the Item Recommendation task, to provide item recommendations, it is required to define two additional arguments, _positiveThreshold_  the threshold for "positive" ratings, and the _topN_ the number of recommended items.
+ 
+```{r,eval=FALSE}
+data("ml100k")
+d <- defineData(ml100k)
+e <- evalModel(d, folds = 2)
+mf <-  evalRec(e, "funk", k = 10, steps = 100, regCoef = 0.0001, learningRate = 0.001, biases = F, positiveThreshold = 3, topN = 3)
+```
 
-The returned object is of type _SVDclass_. 
 
-To get more details about the slots read the reference [manual](https://cran.r-project.org/web/packages/rrecsys/rrecsys.pdf).
+The _k_ default value is 10.
+The _positiveThreshold_ default value is 3.
+The _topN_ default value is 3.
+The _learningRate_ default value is 0.001.
+The _regCoef_ default value is 0.0001.
+The _steps_ default value is 10.
+
+
+
+
+<!-- _k_ is he number of features, _regCoef_ the regularization term and _learningRate_ the learning rate. 
+
+% The returned object is of type _SVDclass_. 
+
+% To get more details about the slots read the reference [manual](https://CRAN.R-project.org/package=rrecsys).
+-->
+

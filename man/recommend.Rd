@@ -1,14 +1,16 @@
 \name{recommend}
-\alias{recommend}
+\alias{recommendHPR}
+\alias{recommendMF}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Generate recommendation.
 }
 \description{
-This method generates top-n recommendations based on a model that has been trained before. 
+This method generates top-n recommendations based on a model that has been trained before. Two main methods: recommendHPR, recommendMF. The first method recommends the highest predicted ratings on a user. Instead recommendMF (currently available only for IBKNN and UBKNN), recommends the most frequent item in the user's neighborhood. 
 }
 \usage{
-recommend(model, topN = 3)
+recommendHPR(model, topN = 3)
+recommendMF(model, topN = 3, pt)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -17,6 +19,10 @@ the trained model of any algorithm.
 }
   \item{topN}{
 number of items to be recommended per user, class \code{numeric}.
+}
+
+  \item{pt}{
+positive threshold, class \code{numeric}.
 }
 }
 
@@ -37,6 +43,6 @@ myratings <- defineData(myratings)
 
 r <- rrecsys(myratings, alg = "FunkSVD", k = 2)
 
-rec <- recommend(r)
+rec <- recommendHPR(r)
 
 }
