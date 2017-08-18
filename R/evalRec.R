@@ -181,7 +181,7 @@ setMethod("evalRec",
                   ex.time = ex.time,
                   TP_count = TP_count,
                 rec_counts = rec_counts/model@folds,
-                rec_popularity = rec_popularity/model@folds
+                rec_popularity = rec_popularity/(nusers * model@folds)
             )
             
           })

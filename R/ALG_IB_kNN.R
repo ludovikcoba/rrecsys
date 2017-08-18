@@ -7,7 +7,7 @@ IB_kNN <- function(data, simFunct = "cos", neigh, coRatedThreshold = 20){
 }
 
 
-IB_kNN.dataSet <- function(data, simFunct = "cos", neigh = 10, coRatedThreshold = 20) {
+IB_kNN.dataSet <- function(data, simFunct = "cos", neigh = 10, coRatedThreshold = 2) {
 
     x <- data@data
     

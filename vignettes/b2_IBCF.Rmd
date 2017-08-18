@@ -1,6 +1,6 @@
 <!--
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{2.2 Item-based k-nearest neighbors}
+%\VignetteIndexEntry{Item-based k-nearest neighbors}
 -->
 
 
@@ -19,6 +19,7 @@ data("ml100k")
 d <- defineData(ml100k)
 e <- evalModel(d, folds = 2)
 ib_model_res <- evalPred(e, "ibknn", simFunct = "cos", neigh = 10)
+ib_model_res
 ```
 For the Item Recommendation task, to provide item recommendations, it is required to define two additional arguments, _positiveThreshold_  the threshold for "positive" ratings, and the _topN_ the number of recommended items.
  
@@ -27,6 +28,7 @@ data("ml100k")
 d <- defineData(ml100k)
 e <- evalModel(d, folds = 2)
 ib_model_res <- evalRec(e, "ibknn", simFunct = "cos", neigh = 10, positiveThreshold = 3, topN = 3)
+ib_model_res
 ```
 
 

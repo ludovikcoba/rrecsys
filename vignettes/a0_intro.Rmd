@@ -1,6 +1,6 @@
 <!--
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{0 Introduction and Installing rrecsys}
+%\VignetteIndexEntry{Introduction and Installing rrecsys}
 -->
 
 ```{r setup, include=FALSE}

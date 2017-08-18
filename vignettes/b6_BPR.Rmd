@@ -1,6 +1,6 @@
 <!--
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{2.6 Bayesian Personalized Ranking}
+%\VignetteIndexEntry{Bayesian Personalized Ranking}
 -->
 
 ## Bayesian Personalized Ranking

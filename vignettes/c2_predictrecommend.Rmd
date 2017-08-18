@@ -1,6 +1,6 @@
 <!--
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{3.1 Predicting & recommending}
+%\VignetteIndexEntry{Predicting & recommending}
 -->
 
 ## Predicting & recommending

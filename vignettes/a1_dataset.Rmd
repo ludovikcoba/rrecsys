@@ -1,6 +1,6 @@
 <!--
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{1.1 A data set in rrecsys}
+%\VignetteIndexEntry{A data set in rrecsys}
 -->
 
 ## The User-Item Rating Matrix

@@ -1,31 +1,33 @@
 <!--
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{2.1 Non-personalized recommendations}
+%\VignetteIndexEntry{Non-personalized recommendations}
 -->
 
 ## Non-personalized Recommendation in rrecsys
 
 The included baseline recommendation methods are the global mean rating (Global Average), item’s mean rating (Item Average), user's mean rating (User Average), as well as an the Most Popular Item Recommendation method that recommends to all users the items that are most popular. 
 
-The "Most Mopular Item Recommendation" algorithm is the simplest implementation for item recommendations. 
+<!--The "Most Mopular Item Recommendation" algorithm is the simplest implementation for item recommendations.
 Every item will be ordered based on the number of times that it has been rated positively. 
-A recommendation for a user will be the list of most popular items in the data set that the user has not chosen yet.
+A recommendation for a user will be the list of most popular items in the data set that the user has not chosen yet. -->
 
-To train a model with them:
+To train a model for the rating prediction task we use the following commands:
 
 ```{r, eval=FALSE}
-# The maximum value of the dataset might not be required since the default value coincides to the actual maximal value of the dataset.
+data("ml100k")
+d <- defineData(ml100k)
+e <- evalModel(d, folds = 2)
 
 globAv <- evalPred(e, alg = "globalaverage")
 globAv
 
 # Algorithm names might be matched on the registry partially.
-itemAv <- rrecsys(smallML, "itemAver")
+itemAv <- evalPred(e,  "itemAver")
 itemAv
-userAv <- rrecsys(smallML, "useraverage")
+userAv <- evalPred(e,  "useraverage")
 userAv
 ```
-Please notice that the baseline recommenders do not require any argument.
+Please notice that the baseline recommenders do not require any other argument.
 
 The returned object are of type _algAverageClass_. 
 

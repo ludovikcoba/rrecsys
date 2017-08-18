@@ -1,6 +1,6 @@
 <!--
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{1.2 Evaluation}
+%\VignetteIndexEntry{Evaluation}
 -->
 
 ## Evaluation
@@ -30,7 +30,3 @@ evalRec(e, "funk", k = 5, positiveThreshold = 3, topN = 3)
 ```
 The _evalPred_ and _evalRec_ arguments correspond to the arguments of the algorithm that we want to evaluate. _evalRec_, obviously, has the _topN_ argument and two additional arguments. The _positiveThreshold_ that defines a threshold to distinguish between a negative rating and a positive rating. For the rank score metric we need to set the _alpha_ argument, which is the rankings half life.
 
-<!--To compute the AUC:
-```{r, eval=FALSE}
-getAUC(e, "globalAv")
-``` -->

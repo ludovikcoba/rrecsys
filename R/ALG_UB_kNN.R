@@ -11,7 +11,7 @@ rrecsysRegistry$set_entry(alg = "UBKNN",
                           parameters = list(neigh = 2, simFunct = NA)) 
 
 
-UB_kNN.dataSet <- function(data, simFunct = "cos", neigh = 10, coRatedThreshold = 20) {
+UB_kNN.dataSet <- function(data, simFunct = "cos", neigh = 10, coRatedThreshold = 2) {
   
   x <- data@data
   

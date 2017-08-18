@@ -31,7 +31,6 @@ setMethod(performSVD, signature = c("dataSet"), function(data,
                     })
 
 
-  
   if(biases){
 
     res <- FSVDupdaterBiases( 

@@ -1,6 +1,6 @@
 <!--
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{5 Extendind rrecsys}
+%\VignetteIndexEntry{Extendind rrecsys}
 -->
 
 ## Extending rrecsys (prototyping)

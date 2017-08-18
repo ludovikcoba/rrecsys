@@ -1,6 +1,6 @@
 <!--
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{2.4 Simon Funk's SVD}
+%\VignetteIndexEntry{Simon Funk's SVD}
 -->
 
 ## Simon Funk's Matrix Factorization
@@ -27,6 +27,7 @@ data("ml100k")
 d <- defineData(ml100k)
 e <- evalModel(d, folds = 2)
 mf <-  evalRec(e, "funk", k = 10, steps = 100, regCoef = 0.0001, learningRate = 0.001, biases = F, positiveThreshold = 3, topN = 3)
+mf
 ```
 
 

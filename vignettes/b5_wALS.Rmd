@@ -1,6 +1,6 @@
 <!--
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{2.5 Weighted Alternated Least Squares}
+%\VignetteIndexEntry{Weighted Alternated Least Squares}
 -->
 
 ## Weighted Alternated Least Squares
