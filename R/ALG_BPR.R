@@ -29,7 +29,7 @@ BPR <- function(data,
     # initilize the user and item features
     if(randomInit){
       U <- matrix(rnorm(row_x * k, 0, 0.1), nrow = row_x, ncol = k)
-      V <- matrix(rnorm(row_x * k, 0, 0.1), nrow = row_x, ncol = k)
+      V <- matrix(rnorm(row_x * k, 0, 0.1), nrow = col_x, ncol = k) #franckjay edit: You want this to be the number of items
     }else{
       U <- matrix(0.1, nrow = row_x, ncol = k)
       V <- matrix(0.1, nrow = col_x, ncol = k)
