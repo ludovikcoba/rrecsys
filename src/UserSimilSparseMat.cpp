@@ -5,7 +5,7 @@ using namespace Rcpp;
 const int USER = 0;
 const int ITEM = 1;
 const int SCORE = 2;
-const int BEGINNING = 0;
+//const int BEGINNING = 0;
 
 // [[Rcpp::export]]
 NumericMatrix UserSimilSparseMat(
@@ -56,13 +56,11 @@ NumericMatrix UserSimilSparseMat(
     }else if(x(i,ITEM) < x(j,ITEM)){
       i++;
     }
-    
-    
 
     if(j == row_pointer[user_v + 1] || i == row_pointer[user_u + 1] || j == num_ratings){
       if((s_u != 0) && (s_v != 0)){
         //
-        simil(user_u, user_v) =  (std::max(c,10) /10) * s/sqrt(s_u * s_v);
+        simil(user_u, user_v) =  (std::max(c,damp) /damp) * s/sqrt(s_u * s_v);
         simil(user_v, user_u) = simil(user_u, user_v);
         //symmetry
       }

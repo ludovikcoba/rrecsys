@@ -30,7 +30,7 @@ List FSVDupdaterSparseMatBiases(
     baseline_users[i] = R::runif(0,1);
     
     for(int j = 0; j < nrfeat ; j++){
-      U(i,j) = R::runif(0,1) * sqrt(5.f/nrfeat);
+      U(i,j) = R::runif(0,1) * sqrt(0.5f/nrfeat);
     }
   }
   
@@ -39,7 +39,7 @@ List FSVDupdaterSparseMatBiases(
     baseline_items[i] = R::runif(0,1);
     
     for(int j = 0; j < nrfeat ; j++){
-      V(i,j) = R::runif(0,1) * sqrt(5.f/nrfeat);
+      V(i,j) = R::runif(0,1) * sqrt(0.5f/nrfeat);
     }
   }
 
@@ -126,13 +126,13 @@ List FSVDupdaterSparseMat(
   
   for(int i = 0; i < nr_users; i++){
     for(int j = 0; j < nrfeat ; j++){
-      U(i,j) = R::runif(0,1) * sqrt(5.f/nrfeat);
+      U(i,j) = R::runif(0,1) * sqrt(0.5f/nrfeat);
     }
   }
   
   for(int i = 0; i <  nr_items; i++){
     for(int j = 0; j < nrfeat ; j++){
-      V(i,j) = R::runif(0,1) * sqrt(5.f/nrfeat);
+      V(i,j) = R::runif(0,1) * sqrt(0.5f/nrfeat);
     }
   }
 

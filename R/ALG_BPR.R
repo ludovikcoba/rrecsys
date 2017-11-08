@@ -1,4 +1,4 @@
-# lambda: the learning rate. 
+# learningRate: the learning rate. 
 # regU: regularization parameter for user factors. 
 # regI: regularization parameter for positive item factors. 
 # regJ: regularization parameter for negative item factors. 
@@ -9,7 +9,7 @@
 BPR <- function(data, 
                 k = 10, 
                 randomInit = FALSE, 
-                lambda = 0.05, 
+                learningRate = 0.05, 
                 regU = 0.0025, 
                 regI = 0.0025, 
                 regJ = 0.0025, 
@@ -29,7 +29,7 @@ BPR <- function(data,
     # initilize the user and item features
     if(randomInit){
       U <- matrix(rnorm(row_x * k, 0, 0.1), nrow = row_x, ncol = k)
-      V <- matrix(rnorm(row_x * k, 0, 0.1), nrow = col_x, ncol = k) #franckjay edit: You want this to be the number of items
+      V <- matrix(rnorm(row_x * k, 0, 0.1), nrow = col_x, ncol = k)
     }else{
       U <- matrix(0.1, nrow = row_x, ncol = k)
       V <- matrix(0.1, nrow = col_x, ncol = k)
@@ -71,13 +71,13 @@ BPR <- function(data,
             
             loss <- -log(1/(1 + exp(-xuij)))
             
-            U[u, ] <- U[u, ] + lambda * (sigma0 * (V[i, ] - V[j, ]) - regU * U[u, ])
+            U[u, ] <- U[u, ] + learningRate * (sigma0 * (V[i, ] - V[j, ]) - regU * U[u, ])
             
-            V[i, ] <- V[i, ] + lambda * (sigma0 * U[u, ] - regI * V[i, ])
+            V[i, ] <- V[i, ] + learningRate * (sigma0 * U[u, ] - regI * V[i, ])
             
             if (updateJ) {
               
-                V[j, ] <- V[j, ] + lambda * (sigma0 * (-U[u, ]) - regJ * V[j, ])
+                V[j, ] <- V[j, ] + learningRate * (sigma0 * (-U[u, ]) - regJ * V[j, ])
             }
             
             
@@ -89,7 +89,7 @@ BPR <- function(data,
     
     p_BPR <- list(k = k, 
                   randomInit = randomInit, 
-                  lambda = lambda, 
+                  learningRate = learningRate, 
                   regU = regU, 
                   regI = regI, 
                   regJ = regJ, 
@@ -104,7 +104,7 @@ BPR <- function(data,
 
 
 p_BPR <- list(k = 10, 
-              lambda = 0.05, 
+              learningRate = 0.05, 
               regU = 0.0025, 
               regI = 0.0025, 
               regJ = 0.0025, 

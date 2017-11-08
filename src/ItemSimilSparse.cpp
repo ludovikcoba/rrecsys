@@ -60,14 +60,7 @@ NumericMatrix ItemSimilSparseMat(
     }else if(x(i,USER) < x(j,USER)){
       i++;
     }
-    
-    while(col_pointer[i] == -2 && i < num_ratings){
-      i++;
-    }
-    
-    while(col_pointer[j] == -2 && j < num_ratings){
-      j++;
-    }
+
     
     if(j >= col_pointer[item_v + 1] || i >= col_pointer[item_u + 1] ){
       

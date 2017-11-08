@@ -1,5 +1,5 @@
 # k: number of features.
-# lambda: regularization term.
+# regCoef: regularization term.
 # scheme: weighting scheme.
 # delta: attribute if used in the combined scheme will determine the combination ratio.
 
@@ -8,7 +8,7 @@
 
 wALS <- function(data, 
                  k = 5, 
-                 lambda = 0.01, 
+                 regCoef = 0.01, 
                  scheme = "None!", 
                  delta = 0.04) {
     
@@ -52,7 +52,7 @@ wALS <- function(data,
     while (!isConverged(x, p)) {
         # update user features
         U <- lapply(1:nrow(x), 
-                    function(i) x[i, ] %*% diag(W[i, ]) %*% V %*% ginv(t(V) %*% diag(W[i, ]) %*% V + lambda * sum(W[i, ]) * diag(k)))
+                    function(i) x[i, ] %*% diag(W[i, ]) %*% V %*% ginv(t(V) %*% diag(W[i, ]) %*% V + regCoef * sum(W[i, ]) * diag(k)))
         
         U <- matrix(unlist(U), 
                     nrow = nrow(x), 
@@ -60,7 +60,7 @@ wALS <- function(data,
         
         # update item features
         V <- lapply(1:ncol(x), 
-                    function(j) x[, j] %*% diag(W[, j]) %*% U %*% ginv(t(U) %*% diag(W[, j]) %*% U + lambda * sum(W[, j]) * diag(k)))
+                    function(j) x[, j] %*% diag(W[, j]) %*% U %*% ginv(t(U) %*% diag(W[, j]) %*% U + regCoef * sum(W[, j]) * diag(k)))
         
         V <- matrix(unlist(V), 
                     nrow = ncol(x), 
@@ -74,7 +74,7 @@ wALS <- function(data,
     cat("Total execution time:", as.numeric(Sys.time() - ptm, units = "secs"), "seconds. \n")
     
     p_wALS <- list(k = k, 
-                   lambda = lambda, 
+                   regCoef = regCoef, 
                    scheme = scheme)
     
     new("wALSclass", 
@@ -86,7 +86,7 @@ wALS <- function(data,
 }
 
 p_wALS <- list(k = 10, 
-               lambda = 0.01, 
+               regCoef = 0.01, 
                scheme = "None!", 
                delta = 0.04)
 

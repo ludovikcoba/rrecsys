@@ -6,7 +6,7 @@ using namespace Rcpp;
 const int USER = 0;
 const int ITEM = 1;
 const int SCORE = 2;
-const int BEGINNING = 0;
+//const int BEGINNING = 0;
 
 // [[Rcpp::export]]
 NumericVector predictUBSparse(
@@ -44,8 +44,8 @@ NumericVector predictUBSparse(
   
   for(int l = 0 ; l < s.nrow(); l++){
     
-    u = s(l, 0) - 1;
-    i = s(l, 1);
+    u = s(l, USER) - 1;
+    i = s(l, ITEM);
     
     numer = 0;
     denom = 0;
@@ -58,10 +58,10 @@ NumericVector predictUBSparse(
       same_user = true;
       
       while(same_user){
-        if(i == data(v,2)){
+        if(i == data(v,SCORE)){
           count++;
           denom += fabs(simil(u,v-1));
-          numer += (data(j,2) - UsrMeans[v-1]) * simil(u,v-1); 
+          numer += (data(j,SCORE) - UsrMeans[v-1]) * simil(u,v-1); 
         }
         
         j++;
