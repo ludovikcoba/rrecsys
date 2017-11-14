@@ -16,7 +16,6 @@ recommendHPR <- function(model, topN = 3) {
     
   }
   
-  
   p <- predict(model, Round = FALSE, clamp = FALSE)
 
   if(class(model@data) == "sparseDataSet"){
@@ -28,9 +27,6 @@ recommendHPR <- function(model, topN = 3) {
     
   }
   
-  
-  
-
   p[rated_items] <- NA
   # here is where the ordering is done.
   rec_indices <- lapply(1:nrow(model@data), function(i) order(p[i, ], na.last = NA, decreasing = TRUE)[1:topN])
