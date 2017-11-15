@@ -38,3 +38,26 @@ Once the package is installed the usual thing to do would be to load it in the e
 library(rrecsys)
 ```
 Usually we try to keep updated both GitHub and CRAN with the same version of the package. The version on GitHub is intended for the developing community and we recommend to use it with RStudio. On another vignette will be given details on how to extend rrecsys.
+
+## Research
+
+If you use our package in your research, please cite:
+
+
+@inproceedings{Coba:2017:VAR:3109859.3109982,
+ author = {\\c{C}oba, Ludovik and Symeonidis, Panagiotis and Zanker, Markus},
+ title = {Visual Analysis of Recommendation Performance},
+ booktitle = {Proceedings of the Eleventh ACM Conference on Recommender Systems},
+ series = {RecSys '17},
+ year = {2017},
+ isbn = {978-1-4503-4652-8},
+ location = {Como, Italy},
+ pages = {362--363},
+ numpages = {2},
+ url = {http://doi.acm.org/10.1145/3109859.3109982},
+ doi = {10.1145/3109859.3109982},
+ acmid = {3109982},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ keywords = {evaluation, r, recommendation algorithms, visualization},
+} 

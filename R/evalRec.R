@@ -60,25 +60,18 @@ setMethod("evalRec",
               
               r <- rrecsys(x, alg = alg, ...)
 
-              #FIX ME: predict over single user and evaluate.####
               # get the recommended indices####
               if(topNGen == "hpr"){#if HPR
-                #rec <- recommendHPR(x, alg, topN, ...)
-               
-                p <- predict(r, Round = FALSE, clamp = FALSE)
-                rec <- lapply(1:nrow(d), 
-                                      function(i) 
-                                        order(p[i, ], na.last = NA, decreasing = T)[1:topN])
+                rec <- recommendHPR(r, topN)
+
                 
               }else if (topNGen == "mf"){
+                #MF works only with IB and UB.
                 rec <- recommendMF(r, topN, positiveThreshold)
               }
             
               # item and user coverage calculation
               tot_rec <- 0
-              
-          
-              
               
               item_coverage <- rep(FALSE, ncol(d))
               
