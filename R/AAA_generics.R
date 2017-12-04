@@ -20,6 +20,7 @@ setGeneric(name = "evalPred", def = function(model, ...) standardGeneric("evalPr
 
 setGeneric(name = "evalModel", def = function(data, folds) standardGeneric("evalModel"))
 
+
 setGeneric(name = "getAUC", def = function(model, ...) standardGeneric("getAUC"))
 
 setGeneric(name = "predict", def = function(model, ...) standardGeneric("predict")) 

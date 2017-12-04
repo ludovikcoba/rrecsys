@@ -1,7 +1,12 @@
+setGeneric(name = "evalRec", def = function(rec, ...) standardGeneric("evalRec"))
+
+
+
 setMethod("evalRec", 
-          signature = c(model = "evalModel"), 
-          function(model, 
-                   alg = NULL, 
+          signature = c(rec = "list"), 
+          function(rec, 
+                   train, 
+                   test,
                    topN = 3,
                    topNGen = "hpr",
                    positiveThreshold = NULL, 
@@ -10,11 +15,7 @@ setMethod("evalRec",
             
             
             
-            if (missing(alg)) {
-              stop("Evaluation on recommendations can not proceed if argument alg and is not specified.")
-            }
-            
-            if (model@data@binary) {
+            if (train@binary) {
               if (!is.null(positiveThreshold)) {
                 cat("NOTE: The \"positiveThreshold\" attribute is not needed for binary dataset.\n")
               }
@@ -27,154 +28,122 @@ setMethod("evalRec",
             
             if (!(topNGen %in% c("hpr", "mf"))) stop("Wrong topNGen value! Choose among: \"hpr\", \"mf\" (available only for IBKNN and UBKNN). ")
             
-            cat("Evaluating top-", topN, " recommendation with ", rrecsysRegistry$get_entry(alg = alg)$alg, ".\n")
-            
-            nusers <- nrow(model@data)
-            nitems <- ncol(model@data)
+            nusers <- nrow(train)
+            nitems <- ncol(train)
             
             # initialize empty containers
-            nDCG <- rep(0, model@folds)
-            rankscore <- rep(0, model@folds)
+            nDCG <- 0
+            rankscore <- 0
             
-            TP_count <- rep(0, ncol(model@data))
-            rec_counts <- rep(0, ncol(model@data))
+            TP_count <- rep(0, ncol(train))
+            rec_counts <- rep(0, ncol(train))
             rec_popularity <- rep(0, topN)
+            user_evaluated <- 0 #counts the number of users evaluated, that had a test set different from empty
+
             
-            res <- NULL
+            ex.time <- Sys.time()
             
+            ############check carefully##############
+            popularity <- train@data %>%
+              arrange(item) %>%
+              group_by(item) %>%
+              summarise(Pop = length(user))
             
-            ex.time <- c()
+            popularity <- popularity$Pop
+            #########################################
+            item_coverage <- rep(FALSE, ncol(train))
             
-            # iterations on folds
-            for (i in 1:model@folds) {
+            tot_res <- list(TP = 0, 
+                                FP = 0, 
+                                TN = 0, 
+                                FN = 0, 
+                                precision = 0, 
+                                recall = 0, 
+                                F1 = 0)
+            
+
+            users_unique_ids <- unique(test$user)
+            userPointers <- getPointers(1:max(users_unique_ids), test$user)
+
+            for (user_ID in users_unique_ids) {
+
+
+              if(user_ID > train@nrUsers) next#new userID
+              #if no recommendation was provided for the user it is skipped
+              if(is.null(rec[[user_ID]])) next
               
-              ptm <- Sys.time()
-              # get a copy of the rating matrix
-              d <- model@data
-              # generate the training set
-              testSetIDX <- model@fold_indices[[i]]
-              #clear a dataset from the test set.
-              x <- removeScores(d, model@fold_indices[[i]])
-
-              popularity <- colRatings(x)
+              rec_counts[rec[[user_ID]]] <-  rec_counts[rec[[user_ID]]] + 1
               
-              r <- rrecsys(x, alg = alg, ...)
-
-              # get the recommended indices####
-              if(topNGen == "hpr"){#if HPR
-                rec <- recommendHPR(r, topN)
-
-                
-              }else if (topNGen == "mf"){
-                #MF works only with IB and UB.
-                rec <- recommendMF(r, topN, positiveThreshold)
+              rec_popularity <- rec_popularity + popularity[rec[[user_ID]]]
+              
+              users_test_set <- test[userPointers[[user_ID]],]
+              
+              #skip if testset is empty or there is no positive rating.
+              if(nrow(users_test_set) == 0) next
+              if(nrow(users_test_set %>% filter(score >= positiveThreshold)) == 0) next
+              
+              user_evaluated <- user_evaluated + 1
+              #item coverage  
+              for (n in rec[[user_ID]]) {
+                item_coverage[n] <- TRUE
               }
-            
-              # item and user coverage calculation
-              tot_rec <- 0
+
+              #determine results on user. 
+              res_user <- getPrecRecall(users_test_set, 
+                                        rec[[user_ID]], 
+                                        positiveThreshold,
+                                        TP_count,
+                                        nitems)
               
-              item_coverage <- rep(FALSE, ncol(d))
+              TP_count <- res_user$TP_count
               
-              res_on_fold <- list(TP = 0, 
-                                  FP = 0, 
-                                  TN = 0, 
-                                  FN = 0, 
-                                  precision = 0, 
-                                  recall = 0, 
-                                  F1 = 0)
-              
-              for (user in 1:nusers) {
-                
-                rec_counts[rec[[user]]] <-  rec_counts[rec[[user]]] + 1
-
-                rec_popularity <- rec_popularity + popularity[rec[[user]]]
-                
-                #item coverage  
-                for (n in rec[[user]]) {
-                  item_coverage[n] <- TRUE
-                  tot_rec <- tot_rec + 1
-                }
-                
-                if(class(model@data) == "sparseDataSet"){
-                  
-                  user_vector <- c(rep(NA,nitems))
-                  
-                  user_items <- d@data$item[d@userPointers[[user]]]
-                  
-                  user_scores <- d@data$score[d@userPointers[[user]]]
-                  
-                  user_vector[user_items] <- user_scores
-                  
-                  indices_user <- d@data$item[model@fold_indices_x_user[[user]][[i]]]
-                  
-                } else{
-                  
-                  user_vector <- d@data[user, ]
-                  
-                  indices_user <- model@fold_indices_x_user[[user]][[i]]
-
-                }
-
-                #determine results on user. 
-                res_user <- getPrecRecall(user_vector, 
-                                          rec[[user]], 
-                                          indices_user, 
-                                          positiveThreshold,
-                                          TP_count)
-                
-                TP_count <- res_user$TP_count
-                
-                for(j in 1:length(res_on_fold)) {
-                  res_on_fold[[j]] <- res_on_fold[[j]] + res_user[[j]]
-                }
-                
-
-                nDCG[i] <- nDCG[i] + 
-                  eval_nDCG(rec[[user]], indices_user)
-                
-                rankscore[i] <- rankscore[i] + 
-                  rankScore(rec[[user]], indices_user, alpha)
+              for(j in 1:length(tot_res)) {
+                tot_res[[j]] <- tot_res[[j]] + res_user[[j]]
               }
               
-              res_on_fold <- lapply(res_on_fold, function(temp) temp/nusers)
               
-              # find average values for the confusion matrix.
-              res <- rbind(res, as.data.frame(res_on_fold))
-              #get averages
-              nDCG[i] <- nDCG[i]/nusers
-              rankscore[i] <- rankscore[i]/nusers
+              nDCG <- nDCG + 
+                eval_nDCG(rec[[user_ID]], users_test_set$item)
               
-              ex.time <- c(ex.time, as.numeric(Sys.time() - ptm, units = "secs"))
-              
-              cat("\nFold:", i, "/", model@folds, " elapsed. Time:", as.numeric(Sys.time() - ptm, units = "secs"), "\n\n")
-              
-              
+              rankscore <- rankscore + 
+                rankScore(rec[[user_ID]], users_test_set$item, alpha)
             }
+
+            #average over the number of users that were evaluated
+            tot_res <- lapply(tot_res, function(x) x/user_evaluated)
+            
+            # find average values for the confusion matrix.
+            #get averages
+            nDCG <- nDCG/user_evaluated
+            rankscore <- rankscore/user_evaluated
+            
+            ex.time <- as.numeric(Sys.time() - ex.time, units = "secs")
+            
+            cat("Evaluation completed. Time:", as.numeric(Sys.time() - ex.time, units = "secs"), "\n\n")
+            
+            
+            
             
             #output results####
             new('evalRecResults',
-                  data = model@data,
-                  alg = r@alg,
-                  topN = topN,
-                  topNGen = topNGen,
-                  positiveThreshold = positiveThreshold, 
-                  alpha = 10,
-                  parameters = r@parameters,
-                  TP = res$TP, 
-                  FP = res$FP, 
-                  TN = res$TN, 
-                  FN = res$FN, 
-                  precision = res$precision, 
-                  recall = res$recall, 
-                  F1 = res$F1,
-                  nDCG = nDCG, 
-                  rankscore = rankscore, 
-                  item_coverage = 100 * sum(item_coverage)/ncol(model@data),
-                  user_coverage = 100 * tot_rec/(topN * nrow(model@data)),
-                  ex.time = ex.time,
-                  TP_count = TP_count,
-                rec_counts = rec_counts/model@folds,
-                rec_popularity = rec_popularity/(nusers * model@folds)
+                topN = topN,
+                positiveThreshold = positiveThreshold, 
+                alpha = 10,
+                TP = tot_res$TP, 
+                FP = tot_res$FP, 
+                TN = tot_res$TN, 
+                FN = tot_res$FN, 
+                precision = tot_res$precision, 
+                recall = tot_res$recall, 
+                F1 = tot_res$F1,
+                nDCG = nDCG, 
+                rankscore = rankscore, 
+                item_coverage = 100 * sum(item_coverage)/ncol(train),
+                user_coverage = 100 * user_evaluated/ nrow(train),
+                ex.time = ex.time,
+                TP_count = TP_count,
+                rec_counts = rec_counts,
+                rec_popularity = rec_popularity/user_evaluated
             )
             
           })
@@ -184,16 +153,9 @@ setMethod("evalRec",
 
 setMethod("show", signature(object = "evalRecResults"), function(object) {
 
-  res <- cbind(object@precision, object@recall, object@ex.time)
+  res <- c(object@precision, object@recall, object@ex.time)
   
-  res <- rbind(res, colMeans(res))
-  
-  cat("Algorithm: ", object@alg, "\n")
-  cat("Configuration: \n")
-  print(as.data.frame(object@parameters))
-  
-  rownames(res) <- c(paste0(1:length(object@precision), rep("-fold", length(object@precision))), "Average")
-  colnames(res) <- c("precision", "recall", "ex.time")
+  names(res) <- c("precision", "recall", "ex.time")
 
   cat("\n")
   
@@ -280,15 +242,11 @@ setMethod("results", signature(object = "evalRecResults"), function(object, metr
     }
   }
   
-  cat("Algorithm: ", object@alg, "\n")
   cat("Configuration: \n")
   
   print(as.data.frame(object@parameters))
   
-  printable_results <- rbind(printable_results, colMeans(printable_results))
-  
-  rownames(printable_results) <- c(paste0(1:length(object@precision), rep("-fold", length(object@precision))), "Average")
-  colnames(printable_results) <- metrics
+  names(printable_results) <- metrics
   
   cat("\n")
   

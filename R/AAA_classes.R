@@ -100,12 +100,9 @@ setClass(
          
   representation(
     
-    data = "data.frame", 
-    userID = "numeric",
-    itemID = "numeric",
-    userPointers = "list",
-    itemPointers = "list"
-    
+    data = "data.frame",
+    nrUsers = "numeric",
+    nrItems = "numeric"
   ),
          
   contains = "_ds"
@@ -136,7 +133,6 @@ setClass(
   representation(
     
     alg = "character", 
-    data = "_ds", 
     sim = "matrix", 
     sim_index_kNN = "matrix", 
     neigh = "numeric",
@@ -152,14 +148,6 @@ setClass(
   contains = "SimilBasedClass"
   
 )
-
-setClass(
-  
-  "UBclass",
-  
-  contains = "SimilBasedClass"
-)
-
 
 
 # wALSclass####
@@ -252,13 +240,9 @@ setClass(
 #evalResults#### 
 setClass('evalRecResults', 
          representation(
-           data = "_ds",
-           alg = "character",
            topN = "numeric",
-           topNGen = "character",
            positiveThreshold = "numeric", 
            alpha = "numeric",
-           parameters = "list",
            TP = "numeric", 
            FP = "numeric", 
            TN = "numeric", 

@@ -1,63 +1,60 @@
 # Recall, precision, TP, FP, atc. on a given user.
 
-getPrecRecall <- function(data, 
+getPrecRecall <- function(test_set, 
                           rec_items, 
-                          fold_items_x_user, 
                           goodRating,
-                          TP_count) {
+                          TP_count,
+                          catalog_size) {
   
-  res <- list(TP = 0, 
-              FP = 0, 
-              TN = 0, 
-              FN = 0, 
-              precision = 0, 
-              recall = 0, 
-              F1 = 0,
-              TP_count = TP_count)
+
+  TP <- 0; FP <- 0; FN <- 0; TN <- 0; precision <- 0; recall <- 0; F1 <- 0; 
+
   
   if (length(rec_items) != 0) {
     # match test set items with recommended items
+    
+    TP_observations <-  test_set %>% 
+      filter(score > goodRating, item %in% rec_items)
+    
+    TP <- nrow(TP_observations)
+    
+    TP_count[TP_observations$item] <- TP_count[TP_observations$item] + 1
+    
+    nr_positive_scores <- as.numeric(
+      test_set %>% 
+        filter(score >= goodRating) %>%
+        summarise(n()))
+    
+    FN <- nr_positive_scores - TP
+    
+    FP <- length(rec_items) - TP
+    
+    TN <- catalog_size - TP - FN - FP
+    
 
-    match_TS <- which(rec_items %in% fold_items_x_user)
+    precision <- TP/length(rec_items)
     
-    for(i in rec_items[match_TS]){
-      if (data[i] >= goodRating){
-        res$TP_count[i] <- res$TP_count[i] + 1
-        res$TP <- res$TP + 1
-      }
-    }
-    
-    #res$TP <- sum(data[rec_items[match_TS]] >= goodRating)
-
-    res$FN <- sum(data[fold_items_x_user] >= goodRating) - res$TP
-    
-    res$FP <- length(rec_items) - res$TP
-    
-    res$TN <- length(data) - res$TP - res$FN - res$FP
-    
-    if (sum(data[fold_items_x_user] >= goodRating, na.rm =T) == 0) {#all the items in the fold disliked by the user
-      res$precision <- 1
-    }
-    
-    if (length(rec_items) != 0) {
-      res$precision <- res$TP/length(rec_items)
+    if ((TP + FN) != 0){ 
+      recall <- TP/(TP + FN)
     }else{
-      res$precision <- 1
+      recall <- 1
     }
     
-    if ((res$TP + res$FN) != 0){ 
-      res$recall <- res$TP/(res$TP + res$FN)
-    }else{
-      res$recall <- 1
-    }
-    
-    if ((res$precision + res$recall)!= 0 )
+    if ((precision + recall)!= 0 )
     {
-      res$F1 = 2 * (res$precision * res$recall)/ (res$precision + res$recall)
+      F1 = 2 * (precision * recall)/ (precision + recall)
     }
     
   }
   
-  res
+  list(TP = TP, 
+       FP = FP, 
+       TN = TN, 
+       FN = FN, 
+       precision = precision, 
+       recall = recall, 
+       F1 = F1,
+       TP_count = TP_count)
+  
   
 } 

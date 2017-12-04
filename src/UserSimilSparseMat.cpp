@@ -19,27 +19,15 @@ NumericMatrix UserSimilSparseMat(
   int user_u, user_v, i, j;
   double s = 0, s_u = 0, s_v = 0;
   bool go_on = true;
-  NumericVector row_pointer(dim+1);
-  
-  
-  user_u = -1;
   int c = 0;
   
-  for(int l = 0; l < num_ratings; l++){
-    if(x(l,USER) != user_u){
-      row_pointer[c] = l;
-      c++;
-      user_u = x(l,USER);
-    }
-  }
+  i=0;
+  user_u = x(i, USER); //we set u to point to the first user.
   
-  row_pointer[dim] = - 1;
-  
-  user_u = 0; //we set u to point to the first user.
-  user_v = 1; //we set v to point to the the second user.
-  i = row_pointer[user_u];// pointer on the scores of user u;
-  j = row_pointer[user_v];// pointer on the scores of user v;
-  c = 0;
+  j=0;
+  while(x(j, USER) == user_u) j++;
+  user_v = x(j, USER); //we set v to point to the the second user.
+
 
 
   while(go_on){
@@ -57,7 +45,8 @@ NumericMatrix UserSimilSparseMat(
       i++;
     }
 
-    if(j == row_pointer[user_v + 1] || i == row_pointer[user_u + 1] || j == num_ratings){
+    
+    if(x(j,USER) != user_v || x(i,USER) != user_u || j == num_ratings){
       if((s_u != 0) && (s_v != 0)){
         //
         simil(user_u, user_v) =  (std::max(c,damp) /damp) * s/sqrt(s_u * s_v);
@@ -72,18 +61,17 @@ NumericMatrix UserSimilSparseMat(
 
       user_u++; //we set u to point to the first user.
       if(user_u == user_v){
-        user_u = 0;
-        user_v ++;
+        user_u = x(0, USER); //reset pointer to user 1
+        while(j != num_ratings || x(j, USER) == user_v) j++;//go to next user
+        
+        if(j == num_ratings) {go_on = false;}
+        else {user_v = x(j, USER);}
+        
       }
-
-      i = row_pointer[user_u];// pointer on the scores of user u;
-      j = row_pointer[user_v];// pointer on the scores of user v;
-      
-      if(j == -1) go_on = false;
 
     }
     
-    
+    if(j == num_ratings) go_on = false;
 
   }
   

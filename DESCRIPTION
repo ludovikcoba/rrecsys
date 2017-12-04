@@ -18,7 +18,8 @@ Depends:
     MASS,
     stats,
     knitr,
-    ggplot2
+    ggplot2,
+    dplyr
 License: GPL-3
 VignetteBuilder: knitr
 Encoding: UTF-8
