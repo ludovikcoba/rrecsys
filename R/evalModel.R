@@ -97,8 +97,8 @@ removeScores.dataSet <- function(x, tsI){
 removeScores.sparseDataSet <- function(x, tsI){
 
   x@data <- x@data[-tsI, ]
-  x@userPointers <- getPointers(x@userID, x@data$user)
-  x@itemPointers <- getPointers(x@itemID, x@data$item)
+  x@userPointers <- getPointers(1:nrow(x), x@data$user)
+  x@itemPointers <- getPointers(1:ncol(x), x@data$item)
 
   x
   

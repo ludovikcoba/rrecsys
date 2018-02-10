@@ -8,8 +8,6 @@ setMethod("evalRec",
                    alpha = 10,
                    ...) {
             
-            
-            
             if (missing(alg)) {
               stop("Evaluation on recommendations can not proceed if argument alg and is not specified.")
             }
@@ -158,7 +156,7 @@ setMethod("evalRec",
                   topN = topN,
                   topNGen = topNGen,
                   positiveThreshold = positiveThreshold, 
-                  alpha = 10,
+                  alpha = alpha,
                   parameters = r@parameters,
                   TP = res$TP, 
                   FP = res$FP, 

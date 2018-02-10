@@ -2,14 +2,15 @@
 
 setClass('slopeOneClass', representation( alg = "character", 
                                             data = "dataSet", 
-                                            devcard = "list" )) 
+                                            devcard = "list" ,
+                                          parameters = "list")) 
 setMethod("show", signature(object = "slopeOneClass"), function(object) {
   cat("The model was trained on the dataset using ", object@alg, "algorithm.")
 })
 
 
 
-slopeOne <- function(data) { 
+slopeOne <- function(data, corated = 3) { 
 
   x <- data@data
   
@@ -20,7 +21,7 @@ slopeOne <- function(data) {
   
   devcard <- weightedSlopeOneRM(x)
   
-  new("slopeOneClass", alg = "slopeOne", data = data, devcard = devcard)
+  new("slopeOneClass", alg = "slopeOne", data = data, devcard = devcard, parameters = list(corated = corated))
   
 }
 
@@ -31,8 +32,8 @@ rrecsysRegistry$set_entry(alg = "slopeOne", # the algorithm bane for the dispach
                           parameters = NA) #argument with default values separated by comma.
 
 
-setMethod("predict", signature = c(model = "slopeOneClass"), function(model, Round = FALSE, s) {
-  
+setMethod("predict", signature = c(model = "slopeOneClass"), function(model, Round = FALSE, s, clamp = TRUE) {
+
   data <- model@data
   x <- data@data
   minimum <- model@data@minimum
@@ -45,13 +46,13 @@ setMethod("predict", signature = c(model = "slopeOneClass"), function(model, Rou
     for(m in 1:nrow(data)){
       
       not_ratedIDX <- which(is.na(x[m, ]))
-      ratedIDX <- which(!is.na(x[m, ] != 0))
+      ratedIDX <- which(!is.na(x[m, ]))
       
       for(j in not_ratedIDX){
-        denom <- sum(Cardinality[j, ratedIDX])
+        denom <- sum(Cardinality[j, ratedIDX]) + model@parameters$corated
         
         if(denom !=0){
-          x[m ,j] <- sum((Deviation[j, ratedIDX] + x[m ,ratedIDX]) * Cardinality[j, ratedIDX]) / denom
+          x[m ,j] <- sum((Deviation[j, ratedIDX] + x[m ,ratedIDX]) * Cardinality[j, ratedIDX]) / denom 
         }
         
       }
@@ -60,7 +61,7 @@ setMethod("predict", signature = c(model = "slopeOneClass"), function(model, Rou
 
     data@data <- x
     
-    roundData(data, Round)
+    #roundData(data, Round)
   }else{
     
     p <- c()
@@ -76,7 +77,7 @@ setMethod("predict", signature = c(model = "slopeOneClass"), function(model, Rou
       }
       item <- s$item[i]
       
-      denom <- sum(Cardinality[item, ratedByU])
+      denom <- sum(Cardinality[item, ratedByU]) + model@parameters$corated
       
       if(denom == 0){
         pr <- minimum
@@ -86,8 +87,10 @@ setMethod("predict", signature = c(model = "slopeOneClass"), function(model, Rou
         pr <- sum(pr)/denom
       }
       
-      if(pr < minimum) pr <- minimum
-      if(pr > maximum) pr <- maximum
+      if(clamp){
+        if(pr < minimum) pr <- minimum
+        if(pr > maximum) pr <- maximum
+      }
       
       p <- c(p, pr)
       

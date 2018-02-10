@@ -15,6 +15,8 @@ wALS <- function(data,
     
     x <- data@data
     
+    x[which(is.na(x))] <- 0
+    
     colnames(x) <- NULL
     rownames(x) <- NULL
     

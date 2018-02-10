@@ -58,9 +58,6 @@ F. Ricci, L. Rokach, B. Shapira, and P. B. Kantor, editors. \emph{Recommender Sy
   SVDEvaluation         
   
   
-  IBEvaluation <- evalRec(e, "IBKNN", simFunct = "cos", positiveThreshold = 4, neigh = 5)
-  
-  IBEvaluation
   
 }
   
