@@ -1,4 +1,6 @@
-# rrecsys 
+# \*\* THIS PROJECT IS NOT MAINTAINED ANYMORE \*\*
+
+# rrecsys
 [![CRAN](http://www.r-pkg.org/badges/version/rrecsys)](https://cran.r-project.org/web/packages/rrecsys/index.html)
 [![CRAN](http://cranlogs.r-pkg.org/badges/rrecsys)](https://cran.r-project.org/web/packages/rrecsys/index.html)
 [![Appveyor build status](https://ci.appveyor.com/api/projects/status/j0504s5kapv95xe5?svg=true)](https://ci.appveyor.com/project/ludovikcoba/rrecsys) 
